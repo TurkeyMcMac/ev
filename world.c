@@ -1,11 +1,24 @@
 #include "world.h"
 
+#include "brain.h"
+#include "organism.h"
 #include "tile.h"
 
 #include <malloc.h>
 #include <stdio.h>
 
-struct World World_random(size_t width, size_t height, TILE_SEED tile_seed) {
+struct World World_random(
+	size_t width,
+	size_t height,
+	TILE_SEED tile_seed,
+	unsigned int nutrition,
+	unsigned int fullness,
+	unsigned int unhealth,
+	float mutation,
+	size_t nn_input_num,
+	size_t* nn_layers,
+	size_t nn_layer_num
+) {
 	struct World w;
 	w.width = width;
 	w.height = height;
@@ -15,13 +28,20 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed) {
 			case Tile_EMPTY:
 				w.tiles[i] = Tile_empty();
 				break;
-			case Tile_ORGANISM: {
-				struct Organism o;
-				w.tiles[i] = Tile_organism(o);
-				}
+			case Tile_ORGANISM:
+				w.tiles[i] = Tile_organism(Organism_new(
+					fullness,
+					unhealth,
+					Brain_random(
+						mutation,
+						nn_input_num,
+						nn_layers,
+						nn_layer_num
+					)
+				));
 				break;
 			case Tile_FOOD:
-				w.tiles[i] = Tile_food(0);
+				w.tiles[i] = Tile_food(nutrition);
 				break;
 			case Tile_ROCK:
 				w.tiles[i] = Tile_rock();

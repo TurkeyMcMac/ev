@@ -30,6 +30,6 @@ typedef enum {
 	MOVE_NOWHERE
 } MOVE;
 
-MOVE Organism_react(char *tiles);
+MOVE Organism_react(struct Organism* self, char* tiles);
 
 #endif

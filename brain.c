@@ -109,7 +109,7 @@ struct Brain Brain_random(float amount, size_t input_num, size_t* layers, size_t
 	return b;
 }
 
-
+/*
 #include <stdio.h>
 #include <time.h>
 
@@ -127,4 +127,4 @@ int main() {
 
 	for (size_t i = 0; i < 5; ++i)
 		printf("%d\n", output[i]);
-}
+}*/
