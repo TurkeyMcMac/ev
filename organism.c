@@ -1,5 +1,6 @@
 #include "organism.h"
 
+#include <malloc.h>
 #include <stddef.h>
 
 void Organism_eat(struct Organism* self, unsigned int nutrients) {
@@ -19,21 +20,26 @@ char Organism_dead(struct Organism* self) {
 MOVE Organism_react(struct Organism* self, char* tiles) {
 	char* out = Brain_compute(self->brain, tiles);
 
-	for (size_t i = 0; i < 4; ++i) {
+	for (size_t i = 0; i < ORGANISM_OUTPUT_NUM; ++i) {
 		if (out[i]) {
 			switch (i) {
 				case 0:
+					free(out);
 					return MOVE_UP;
 				case 1:
+					free(out);
 					return MOVE_DOWN;
 				case 2:
+					free(out);
 					return MOVE_RIGHT;
 				case 3:
+					free(out);
 					return MOVE_LEFT;
 			}
 		}
 	}
 
+	free(out);
 	return MOVE_NOWHERE;
 }
 

@@ -2,6 +2,12 @@
 
 #define _ORGANISM_H
 
+#define ORGANISM_OUTPUT_NUM 4
+
+#include "brain.h"
+
+#include <stddef.h>
+
 struct Organism {
 	unsigned int fullness;
 	unsigned int unhealth;
@@ -22,6 +28,6 @@ typedef enum {
 	MOVE_NOWHERE
 } MOVE;
 
-MOVE Organism_react(char* tiles);
+MOVE Organism_react(char *tiles);
 
 #endif
