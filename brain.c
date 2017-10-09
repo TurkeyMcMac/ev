@@ -39,7 +39,7 @@ char* Layer_compute(struct Layer* self, char* input) {
 	char* output = malloc(self->neuron_num);
 
 	for (size_t i = 0; i < self->neuron_num; ++i)
-		output[i] = Neuron_compute(self->neurons + i, input);
+		output[i] = Neuron_compute(&self->neurons[i], input);
 
 	return output;
 }
@@ -48,7 +48,7 @@ struct Layer Layer_mutate(struct Layer* self, float amount) {
 	struct Layer l;
 	l.neurons = malloc(self->neuron_num * sizeof(struct Neuron));
 	for (size_t i = 0; i < self->neuron_num; ++i)
-		l.neurons[i] = Neuron_mutate(self->neurons + i, amount);
+		l.neurons[i] = Neuron_mutate(&self->neurons[i], amount);
 
 	l.neuron_num = self->neuron_num;
 
@@ -74,8 +74,8 @@ char* Brain_compute(struct Brain* self, char* input) {
 	for (size_t i = 1; i < self->layer_num; ++i) {
 		char* old_last_output = last_output;
 
-		last_output = Layer_compute(self->layers + i, last_output);
-		last_size = (self->layers + i)->neuron_num;
+		last_output = Layer_compute(&self->layers[i], last_output);
+		last_size = (&self->layers[i])->neuron_num;
 
 		free(old_last_output);
 	}
@@ -87,7 +87,7 @@ struct Brain Brain_mutate(struct Brain* self, float amount) {
 	struct Brain b;
 	b.layers = malloc(self->layer_num * sizeof(struct Layer));
 	for (size_t i = 0; i < self->layer_num; ++i)
-		b.layers[i] = Layer_mutate(self->layers + i, amount);
+		b.layers[i] = Layer_mutate(&self->layers[i], amount);
 
 	b.layer_num = self->layer_num;
 
