@@ -29,6 +29,14 @@ struct Tile* World_get_unchecked(struct World* self, size_t x, size_t y);
 
 struct Tile* World_get(struct World* self, size_t x, size_t y);
 
+size_t World_wrap_x_r(struct World* self, size_t x, size_t x_off);
+
+size_t World_wrap_x_l(struct World* self, size_t x, size_t x_off);
+
+size_t World_wrap_y_d(struct World* self, size_t y, size_t y_off);
+
+size_t World_wrap_y_u(struct World* self, size_t y, size_t y_off);
+
 void World_draw(struct World* self, FILE* dest);
 
 #endif

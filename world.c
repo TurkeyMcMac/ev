@@ -62,6 +62,30 @@ struct Tile* World_get(struct World* self, size_t x, size_t y) {
 	else return NULL;
 }
 
+size_t World_wrap_x_r(struct World* self, size_t x, size_t x_off) {
+	return (x + x_off) % self->width;
+}
+
+size_t World_wrap_x_l(struct World* self, size_t x, size_t x_off) {
+	size_t ret_x = x;
+
+	while (ret_x < x_off) ret_x += self->width;
+
+	return ret_x - x_off;
+}
+
+size_t World_wrap_y_d(struct World* self, size_t y, size_t y_off) {
+	return (y + y_off) % self->height;
+}
+
+size_t World_wrap_y_u(struct World* self, size_t y, size_t y_off) {
+	size_t ret_y = y;
+
+	while (ret_y < y_off) ret_y += self->height;
+
+	return ret_y - y_off;
+}
+
 void World_draw(struct World* self, FILE* dest) {
 	Tile_draw(self->tiles, dest);
 
