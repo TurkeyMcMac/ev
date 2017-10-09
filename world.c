@@ -86,6 +86,39 @@ size_t World_wrap_y_u(struct World* self, size_t y, size_t y_off) {
 	return ret_y - y_off;
 }
 
+void encode_tile(struct Tile* tile, size_t i, char* dest) {
+	switch (tile->tag) {
+		case Tile_EMPTY:
+			dest[i] = 1;
+			break;
+		case Tile_ORGANISM:
+			dest[i + 8] = 1;
+			break;
+		case Tile_FOOD:
+			dest[i + 16] = 1;
+			break;
+		case Tile_ROCK:
+			dest[i + 24] = 1;
+	}
+}
+
+void World_vicinity(struct World* self, size_t x, size_t y, char* dest) {
+	size_t x_r = World_wrap_x_r(self, x, 1),
+	       x_l = World_wrap_x_l(self, x, 1);
+
+	size_t y_d = World_wrap_y_d(self, y, 1),
+	       y_u = World_wrap_y_u(self, y, 1);
+
+	encode_tile(World_get_unchecked(self, x_r, y_d), 0, dest);
+	encode_tile(World_get_unchecked(self, x_r,   y), 1, dest);
+	encode_tile(World_get_unchecked(self, x_r, y_u), 2, dest);
+	encode_tile(World_get_unchecked(self, x,   y_u), 3, dest);
+	encode_tile(World_get_unchecked(self, x_l, y_u), 4, dest);
+	encode_tile(World_get_unchecked(self, x_l,   y), 5, dest);
+	encode_tile(World_get_unchecked(self, x_l, y_d), 6, dest);
+	encode_tile(World_get_unchecked(self, x,   y_d), 7, dest);
+}
+
 void World_draw(struct World* self, FILE* dest) {
 	Tile_draw(self->tiles, dest);
 
