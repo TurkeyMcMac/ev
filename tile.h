@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#define TILE_EMPTY_LOOK pixel('_', color(BLUE, BLACK))
+#define TILE_EMPTY_LOOK pixel('.', color(BLUE, BLACK))
 #define TILE_ROCK_LOOK pixel('#', color(BLACK, BLUE))
 #define TILE_FOOD_LOOK pixel(';', color(YELLOW, GREEN))
 #define TILE_ORGANISM_LOOK pixel('J', color(CYAN, RED))
