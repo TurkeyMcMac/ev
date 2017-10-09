@@ -3,7 +3,6 @@
 #define _TILE_H
 
 #include "organism.h"
-#include "pixel.h"
 
 #include <stddef.h>
 #include <stdio.h>
@@ -24,7 +23,6 @@ struct Tile {
 		struct Organism org;
 		unsigned int nutrients;
 	} val;
-	PIXEL look;
 };
 
 struct Tile Tile_empty();

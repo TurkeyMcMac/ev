@@ -92,10 +92,8 @@ void World_update(struct World* self) {
 
 				dest->tag = Tile_ORGANISM;
 				dest->val = tile->val;
-				dest->look = TILE_ORGANISM_LOOK;
 
 				tile->tag = Tile_EMPTY;
-				tile->look = TILE_EMPTY_LOOK;
 
 				end:
 				free(input);
