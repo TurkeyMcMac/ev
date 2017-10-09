@@ -2,6 +2,12 @@
 
 #include <stdlib.h>
 
+struct Neuron {
+	float* weights;
+	size_t weight_num;
+	float threshold;
+};
+
 char Neuron_compute(struct Neuron* self, char* input) {
 	float sum = 0.0;
 
@@ -34,6 +40,11 @@ struct Neuron Neuron_random(float amount, size_t weight_num, float threshold) {
 
 	return n;
 }
+
+struct Layer {
+	struct Neuron* neurons;
+	size_t neuron_num;
+};
 
 char* Layer_compute(struct Layer* self, char* input) {
 	char* output = malloc(self->neuron_num);
