@@ -1,4 +1,4 @@
-#ifndef _ORGANISM_H
+#ifndef _ORGANISM_H // Whole file
 
 #define _ORGANISM_H
 
