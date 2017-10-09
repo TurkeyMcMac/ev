@@ -14,6 +14,8 @@ struct Organism {
 	struct Brain brain;
 };
 
+struct Organism Organism_new(unsigned int fullness, unsigned int unhealth, struct Brain brain);
+
 void Organism_eat(struct Organism* self, unsigned int nutrients);
 
 void Organism_tick(struct Organism* self);

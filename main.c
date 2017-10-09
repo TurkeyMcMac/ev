@@ -2,14 +2,17 @@
 #include "tile.h"
 #include "world.h"
 
-#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main() {
-	struct World w = World_empty(10, 10);
-	*World_get(&w, 2, 3) = Tile_rock();
-	*World_get(&w, 4, 7) = Tile_food(10);
-	struct Organism o;
-	*World_get(&w, 8, 1) = Tile_organism(o);
+	srand(time(NULL));
+	TILE_SEED seed = {
+		.empty    = 240,
+		.organism = 1,
+		.food = 10,
+	};
+	struct World w = World_random(100, 50, seed);
 
 	World_draw(&w, stdout);
 	printf("\n");

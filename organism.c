@@ -1,7 +1,17 @@
 #include "organism.h"
 
+#include "brain.h"
+
 #include <malloc.h>
 #include <stddef.h>
+struct Organism Organism_new(unsigned int fullness, unsigned int unhealth, struct Brain brain) {
+	struct Organism o;
+	o.fullness = fullness;
+	o.unhealth = unhealth;
+	o.brain = brain;
+
+	return o;
+}
 
 void Organism_eat(struct Organism* self, unsigned int nutrients) {
 	self->fullness += nutrients;

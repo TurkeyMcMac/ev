@@ -2,6 +2,8 @@
 
 #define _WORLD_H
 
+#include "tile.h"
+
 #include <stdio.h>
 
 struct World {
@@ -10,7 +12,7 @@ struct World {
 	struct Tile* tiles;
 };
 
-struct World World_empty(size_t width, size_t height);
+struct World World_random(size_t width, size_t height, TILE_SEED tile_seed);
 
 struct Tile* World_get_unchecked(struct World* self, size_t x, size_t y);
 

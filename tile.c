@@ -3,7 +3,7 @@
 #include "organism.h"
 #include "pixel.h"
 
-#include <stdio.h>
+#include <stdlib.h>
 
 struct Tile Tile_empty() {
 	struct Tile t;
@@ -37,6 +37,20 @@ struct Tile Tile_organism(struct Organism org) {
 	t.look = TILE_ORGANISM_LOOK;
 
 	return t;
+}
+
+enum TileTag TILE_SEED_pick(TILE_SEED self) {
+	unsigned char rn = (unsigned char)rand();
+
+	if (rn < self.empty) return Tile_EMPTY;
+
+	unsigned char sum = self.empty;
+
+	if (rn < (sum += self.organism)) return Tile_ORGANISM;
+
+	if (rn < (sum += self.food)) return Tile_FOOD;
+
+	return Tile_ROCK;
 }
 
 void Tile_draw(struct Tile* self, FILE* dest) {

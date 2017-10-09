@@ -14,7 +14,7 @@
 #define TILE_ORGANISM_LOOK pixel('@', color(GREEN, MAGENTA))
 
 struct Tile {
-	enum {
+	enum TileTag {
 		Tile_EMPTY,
 		Tile_ORGANISM,
 		Tile_FOOD,
@@ -34,6 +34,14 @@ struct Tile Tile_rock();
 struct Tile Tile_food(unsigned int nutrients);
 
 struct Tile Tile_organism(struct Organism org);
+
+typedef struct {
+	unsigned char empty;
+	unsigned char organism;
+	unsigned char food;
+} TILE_SEED;
+
+enum TileTag TILE_SEED_pick(TILE_SEED self);
 
 void Tile_draw(struct Tile* self, FILE* dest);
 

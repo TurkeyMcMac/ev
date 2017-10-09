@@ -5,13 +5,28 @@
 #include <malloc.h>
 #include <stdio.h>
 
-struct World World_empty(size_t width, size_t height) {
+struct World World_random(size_t width, size_t height, TILE_SEED tile_seed) {
 	struct World w;
 	w.width = width;
 	w.height = height;
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 	for (size_t i = 0; i < width * height; ++i) {
-		w.tiles[i] = Tile_empty();
+		switch (TILE_SEED_pick(tile_seed)) {
+			case Tile_EMPTY:
+				w.tiles[i] = Tile_empty();
+				break;
+			case Tile_ORGANISM: {
+				struct Organism o;
+				w.tiles[i] = Tile_organism(o);
+				}
+				break;
+			case Tile_FOOD:
+				w.tiles[i] = Tile_food(0);
+				break;
+			case Tile_ROCK:
+				w.tiles[i] = Tile_rock();
+				break;
+		}
 	}
 
 	return w;
