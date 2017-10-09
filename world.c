@@ -90,10 +90,12 @@ void World_update(struct World* self) {
 					default: goto end;
 				}
 
-				dest->tag = Tile_ORGANISM;
-				dest->val = tile->val;
+				if (dest->tag == Tile_EMPTY || dest->tag == Tile_FOOD) {
+					dest->tag = Tile_ORGANISM;
+					dest->val = tile->val;
 
-				tile->tag = Tile_EMPTY;
+					tile->tag = Tile_EMPTY;
+				}
 
 				end:
 				free(input);
