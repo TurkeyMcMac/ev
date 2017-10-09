@@ -8,9 +8,9 @@
 int main() {
 	srand(time(NULL));
 	TILE_SEED seed = {
-		.empty    = 240,
 		.organism = 1,
-		.food = 10,
+		.food     = 10,
+		.rock     = 5
 	};
 	struct World w = World_random(100, 50, seed);
 

@@ -42,15 +42,15 @@ struct Tile Tile_organism(struct Organism org) {
 enum TileTag TILE_SEED_pick(TILE_SEED self) {
 	unsigned char rn = (unsigned char)rand();
 
-	if (rn < self.empty) return Tile_EMPTY;
+	if (rn <= self.organism) return Tile_ORGANISM;
 
-	unsigned char sum = self.empty;
+	unsigned char sum = self.organism;
 
-	if (rn < (sum += self.organism)) return Tile_ORGANISM;
+	if (rn <= (sum += self.food)) return Tile_FOOD;
 
-	if (rn < (sum += self.food)) return Tile_FOOD;
+	if (rn <= (sum += self.rock)) return Tile_ROCK;
 
-	return Tile_ROCK;
+	return Tile_EMPTY;
 }
 
 void Tile_draw(struct Tile* self, FILE* dest) {
