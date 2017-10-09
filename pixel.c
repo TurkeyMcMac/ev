@@ -19,7 +19,7 @@ PIXEL pixel(char symbol, COLOR color) {
 }
 
 void PIXEL_draw(PIXEL self, FILE* dest) {
-	fprintf(dest, "\x1B[%c;%cm%c",
+	fprintf(dest, "\x1B[3%c;4%cm%c",
 		self.color.foreground,
 		self.color.background,
 		self.symbol
