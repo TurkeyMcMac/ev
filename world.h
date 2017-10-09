@@ -26,6 +26,8 @@ struct World World_random(
 	size_t nn_layer_num
 );
 
+void World_update(struct World* self);
+
 struct Tile* World_get_unchecked(struct World* self, size_t x, size_t y);
 
 struct Tile* World_get(struct World* self, size_t x, size_t y);

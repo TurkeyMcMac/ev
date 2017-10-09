@@ -5,6 +5,16 @@
 #include <stdlib.h>
 #include <time.h>
 
+void delay (int millis) {
+#ifdef WIN32
+	#include <windows.h>
+	Sleep(millis);
+#else
+	#include <unistd.h>
+	usleep(millis * 1000);
+#endif
+}
+
 int main() {
 	srand(time(NULL));
 	TILE_SEED seed = {
@@ -25,8 +35,13 @@ int main() {
 		(size_t*)&layers,
 		3);
 
-	World_draw(&w, stdout);
-	printf("\n");
+	while (1) {
+		World_update(&w);
+
+		World_draw(&w, stdout);
+		printf("\n\n\n");
+		delay(100);
+	}
 }
 /*
 struct World World_random(

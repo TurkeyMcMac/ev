@@ -52,6 +52,57 @@ struct World World_random(
 	return w;
 }
 
+void World_update(struct World* self) {
+	for (size_t y = 0; y < self->height; ++y)
+		for (size_t x = 0; x < self->width; ++x) {
+			struct Tile* tile = World_get_unchecked(self, x, y);
+
+			if (tile->tag == Tile_ORGANISM) {
+				char* input = calloc(32, sizeof(char));
+				World_vicinity(self, x, y, input);
+
+				struct Tile* dest;
+				switch (Organism_react(&tile->val.org, input)) {
+					case MOVE_UP:
+						dest = World_get_unchecked(
+							self,
+							x,
+							World_wrap_y_u(self, y, 1));
+						break;
+					case MOVE_DOWN:
+						dest = World_get_unchecked(
+							self,
+							x,
+							World_wrap_y_d(self, y, 1));
+						break;
+					case MOVE_RIGHT:
+						dest = World_get_unchecked(
+							self,
+							World_wrap_x_r(self, x, 1),
+							y);
+						break;
+					case MOVE_LEFT:
+						dest = World_get_unchecked(
+							self,
+							World_wrap_x_l(self, x, 1),
+							y);
+						break;
+					default: goto end;
+				}
+
+				dest->tag = Tile_ORGANISM;
+				dest->val = tile->val;
+				dest->look = TILE_ORGANISM_LOOK;
+
+				tile->tag = Tile_EMPTY;
+				tile->look = TILE_EMPTY_LOOK;
+
+				end:
+				free(input);
+			}
+		}
+}
+
 struct Tile* World_get_unchecked(struct World* self, size_t x, size_t y) {
 	return self->tiles + (y * self->width + x);
 }
