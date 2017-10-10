@@ -75,6 +75,8 @@ void World_update(struct World* self) {
 							self,
 							x,
 							World_wrap_y_u(self, y, 1));
+
+						Tile_shift(tile, dest);
 						break;
 					case MOVE_DOWN:
 						dest = World_get_unchecked(
@@ -82,7 +84,8 @@ void World_update(struct World* self) {
 							x,
 							World_wrap_y_d(self, y, 1));
 						// Skip updating the tile below this because there will be this creature
-						skip_on_next_line[x] = 1;
+						if (Tile_shift(tile, dest))
+							skip_on_next_line[x] = 1;
 						break;
 					case MOVE_RIGHT:
 						dest = World_get_unchecked(
@@ -90,25 +93,19 @@ void World_update(struct World* self) {
 							World_wrap_x_r(self, x, 1),
 							y);
 						// Skip updating the next tile since this organism will be there
-						++x;
+						if (Tile_shift(tile, dest)) ++x;
 						break;
 					case MOVE_LEFT:
 						dest = World_get_unchecked(
 							self,
 							World_wrap_x_l(self, x, 1),
 							y);
+
+						Tile_shift(tile, dest);
 						break;
-					default: goto end;
+					default:;
 				}
 
-				if (dest->tag != Tile_ROCK) {
-					dest->tag = Tile_ORGANISM;
-					dest->val = tile->val;
-
-					tile->tag = Tile_EMPTY;
-				}
-
-				end:
 				free(input);
 			}
 		}

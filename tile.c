@@ -35,6 +35,22 @@ struct Tile Tile_organism(struct Organism org) {
 	return t;
 }
 
+int Tile_solid(const struct Tile* self) {
+	return self->tag == Tile_ROCK || self->tag == Tile_ORGANISM;
+}
+
+int Tile_shift(struct Tile* self, struct Tile* dest) {
+	if (!Tile_solid(dest)) {
+		dest->tag = self->tag;
+		dest->val = self->val;
+
+		self->tag = Tile_EMPTY;
+
+		return 1;
+	} else return 0;
+
+}
+
 enum TileTag TILE_SEED_pick(TILE_SEED self) {
 	unsigned char rn = (unsigned char)rand();
 
