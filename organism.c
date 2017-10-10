@@ -23,11 +23,11 @@ void Organism_tick(struct Organism* self) {
 	self->fullness -= self->unhealth;
 }
 
-char Organism_dead(struct Organism* self) {
+char Organism_dead(const struct Organism* self) {
 	return self->fullness <= 0;
 }
 
-MOVE Organism_react(struct Organism* self, char* tiles) {
+MOVE Organism_react(const struct Organism* self, char* tiles) {
 	char* out = Brain_compute(&self->brain, tiles);
 
 	for (size_t i = 0; i < ORGANISM_OUTPUT_NUM; ++i) {

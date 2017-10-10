@@ -8,7 +8,7 @@ struct Neuron {
 	float threshold;
 };
 
-char Neuron_compute(struct Neuron* self, char* input) {
+char Neuron_compute(const struct Neuron* self, const char* input) {
 	float sum = 0.0;
 
 	for (size_t i = 0; i < self->weight_num; ++i)
@@ -18,7 +18,7 @@ char Neuron_compute(struct Neuron* self, char* input) {
 	return sum > self->threshold;
 }
 
-struct Neuron Neuron_mutate(struct Neuron* self, float amount) {
+struct Neuron Neuron_mutate(const struct Neuron* self, float amount) {
 	struct Neuron n;
 	n.weights = malloc(self->weight_num * sizeof(float));
 	for (size_t i = 0; i < self->weight_num; ++i)
@@ -46,7 +46,7 @@ struct Layer {
 	size_t neuron_num;
 };
 
-char* Layer_compute(struct Layer* self, char* input) {
+char* Layer_compute(const struct Layer* self, const char* input) {
 	char* output = malloc(self->neuron_num);
 
 	for (size_t i = 0; i < self->neuron_num; ++i)
@@ -55,7 +55,7 @@ char* Layer_compute(struct Layer* self, char* input) {
 	return output;
 }
 
-struct Layer Layer_mutate(struct Layer* self, float amount) {
+struct Layer Layer_mutate(const struct Layer* self, float amount) {
 	struct Layer l;
 	l.neurons = malloc(self->neuron_num * sizeof(struct Neuron));
 	for (size_t i = 0; i < self->neuron_num; ++i)
@@ -78,7 +78,7 @@ struct Layer Layer_random(float amount, size_t neuron_num, size_t weight_num) {
 	return l;
 }
 
-char* Brain_compute(struct Brain* self, char* input) {
+char* Brain_compute(const struct Brain* self, const char* input) {
 	char* last_output = Layer_compute(self->layers, input);
 	size_t last_size = self->layers->neuron_num;
 
@@ -94,7 +94,7 @@ char* Brain_compute(struct Brain* self, char* input) {
 	return last_output;
 }
 
-struct Brain Brain_mutate(struct Brain* self, float amount) {
+struct Brain Brain_mutate(const struct Brain* self, float amount) {
 	struct Brain b;
 	b.layers = malloc(self->layer_num * sizeof(struct Layer));
 	for (size_t i = 0; i < self->layer_num; ++i)
@@ -105,7 +105,7 @@ struct Brain Brain_mutate(struct Brain* self, float amount) {
 	return b;
 }
 
-struct Brain Brain_random(float amount, size_t input_num, size_t* layers, size_t layer_num) {
+struct Brain Brain_random(float amount, size_t input_num, const size_t* layers, size_t layer_num) {
 	struct Brain b;
 
 	b.layers = malloc(layer_num * sizeof(struct Layer));

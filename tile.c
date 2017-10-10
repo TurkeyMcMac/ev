@@ -49,7 +49,7 @@ enum TileTag TILE_SEED_pick(TILE_SEED self) {
 	return Tile_EMPTY;
 }
 
-void Tile_draw(struct Tile* self, FILE* dest) {
+void Tile_draw(const struct Tile* self, FILE* dest) {
 	PIXEL p;
 	switch (self->tag) {
 		case Tile_EMPTY:

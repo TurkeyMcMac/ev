@@ -20,7 +20,7 @@ void Organism_eat(struct Organism* self, unsigned int nutrients);
 
 void Organism_tick(struct Organism* self);
 
-char Organism_dead(struct Organism* self);
+char Organism_dead(const struct Organism* self);
 
 typedef enum {
 	MOVE_UP,
@@ -30,6 +30,6 @@ typedef enum {
 	MOVE_NOWHERE
 } MOVE;
 
-MOVE Organism_react(struct Organism* self, char* tiles);
+MOVE Organism_react(const struct Organism* self, char* tiles);
 
 #endif

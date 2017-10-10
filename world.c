@@ -129,11 +129,11 @@ struct Tile* World_get(struct World* self, size_t x, size_t y) {
 	else return NULL;
 }
 
-size_t World_wrap_x_r(struct World* self, size_t x, size_t x_off) {
+size_t World_wrap_x_r(const struct World* self, size_t x, size_t x_off) {
 	return (x + x_off) % self->width;
 }
 
-size_t World_wrap_x_l(struct World* self, size_t x, size_t x_off) {
+size_t World_wrap_x_l(const struct World* self, size_t x, size_t x_off) {
 	size_t ret_x = x;
 
 	while (ret_x < x_off) ret_x += self->width;
@@ -141,11 +141,11 @@ size_t World_wrap_x_l(struct World* self, size_t x, size_t x_off) {
 	return ret_x - x_off;
 }
 
-size_t World_wrap_y_d(struct World* self, size_t y, size_t y_off) {
+size_t World_wrap_y_d(const struct World* self, size_t y, size_t y_off) {
 	return (y + y_off) % self->height;
 }
 
-size_t World_wrap_y_u(struct World* self, size_t y, size_t y_off) {
+size_t World_wrap_y_u(const struct World* self, size_t y, size_t y_off) {
 	size_t ret_y = y;
 
 	while (ret_y < y_off) ret_y += self->height;
@@ -186,7 +186,7 @@ void World_vicinity(struct World* self, size_t x, size_t y, char* dest) {
 	encode_tile(World_get_unchecked(self, x,   y_d), 7, dest);
 }
 
-void World_draw(struct World* self, FILE* dest) {
+void World_draw(const struct World* self, FILE* dest) {
 	Tile_draw(self->tiles, dest);
 
 	for (size_t i = 1; i < self->width * self->height; ++i) {
