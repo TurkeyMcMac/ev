@@ -5,6 +5,7 @@
 #include "tile.h"
 
 #include <malloc.h>
+#include <string.h>
 #include <stdio.h>
 
 struct World World_random(
@@ -53,11 +54,16 @@ struct World World_random(
 }
 
 void World_update(struct World* self) {
-	for (size_t y = 0; y < self->height; ++y)
+	char* skip_on_this_line = calloc(self->width, sizeof(char));
+	char* skip_on_next_line = malloc(self->width);
+
+	for (size_t y = 0; y < self->height; ++y) {
+		memset(skip_on_next_line, 0, self->width);
+
 		for (size_t x = 0; x < self->width; ++x) {
 			struct Tile* tile = World_get_unchecked(self, x, y);
 
-			if (tile->tag == Tile_ORGANISM) {
+			if (tile->tag == Tile_ORGANISM && !skip_on_this_line[x]) {
 				char* input = calloc(32, sizeof(char));
 				World_vicinity(self, x, y, input);
 
@@ -74,12 +80,16 @@ void World_update(struct World* self) {
 							self,
 							x,
 							World_wrap_y_d(self, y, 1));
+						// Skip updating the tile below this because there will be this creature
+						skip_on_next_line[x] = 1;
 						break;
 					case MOVE_RIGHT:
 						dest = World_get_unchecked(
 							self,
 							World_wrap_x_r(self, x, 1),
 							y);
+						// Skip updating the next tile since this organism will be there
+						++x;
 						break;
 					case MOVE_LEFT:
 						dest = World_get_unchecked(
@@ -90,7 +100,7 @@ void World_update(struct World* self) {
 					default: goto end;
 				}
 
-				if (dest->tag == Tile_EMPTY || dest->tag == Tile_FOOD) {
+				if (dest->tag != Tile_ROCK) {
 					dest->tag = Tile_ORGANISM;
 					dest->val = tile->val;
 
@@ -101,6 +111,12 @@ void World_update(struct World* self) {
 				free(input);
 			}
 		}
+
+		memcpy(skip_on_this_line, skip_on_next_line, self->width);
+	}
+
+	free(skip_on_this_line);
+	free(skip_on_next_line);
 }
 
 struct Tile* World_get_unchecked(struct World* self, size_t x, size_t y) {
