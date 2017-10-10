@@ -5,56 +5,55 @@
 #include <stdlib.h>
 #include <time.h>
 
-void delay (int millis) {
-#ifdef WIN32
-	#include <windows.h>
-	Sleep(millis);
-#else
-	#include <unistd.h>
-	usleep(millis * 1000);
-#endif
-}
+const unsigned char ORGANISM_SPAWN_CHANCE = 1;
+const unsigned char FOOD_SPAWN_CHANCE = 10;
+const unsigned char ROCK_SPAWN_CHANCE = 5;
+
+const size_t NN_INPUT_NUM = 32;
+const size_t NN_LAYER_NUM = 3;
+const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, 4};
+
+const size_t WORLD_WIDTH = 100;
+const size_t WORLD_HEIGHT = 50;
+
+const unsigned int FOOD_START_NUTRITION = 10;
+const unsigned int ORG_START_FULLNESS = 10;
+const unsigned int ORG_START_UNHEALTH = 0;
+const float START_MUTATION_AMOUNT = 1.0;
+
+const unsigned int TICK_SLEEP_SECS = 0;
+const unsigned int TICK_SLEEP_NANOS = 100000000;
 
 int main() {
 	srand(time(NULL));
 	TILE_SEED seed = {
-		.organism = 1,
-		.food     = 10,
-		.rock     = 5
+		.organism = ORGANISM_SPAWN_CHANCE,
+		.food     = FOOD_SPAWN_CHANCE,
+		.rock     = ROCK_SPAWN_CHANCE
 	};
-	size_t layers[3] = {16, 8, 4};
 	struct World w = World_random(
-		100,
-		50,
+		WORLD_WIDTH,
+		WORLD_HEIGHT,
 		seed,
-		10,
-		10,
-		0,
-		10.0,
-		32,
-		(size_t*)&layers,
-		3);
+		FOOD_START_NUTRITION,
+		ORG_START_FULLNESS,
+		ORG_START_UNHEALTH,
+		START_MUTATION_AMOUNT,
+		NN_INPUT_NUM,
+		(size_t*)&NN_LAYERS,
+		NN_LAYER_NUM);
+
+	struct timespec tick_delay = {
+		.tv_sec = TICK_SLEEP_SECS,
+		.tv_nsec = TICK_SLEEP_NANOS,
+	};
 
 	while (1) {
 		World_update(&w);
 
 		World_draw(&w, stdout);
 		printf("\n\n\n");
-		delay(100);
+
+		nanosleep(&tick_delay, NULL);
 	}
 }
-/*
-struct World World_random(
-	size_t width,
-	size_t height,
-	TILE_SEED tile_seed,
-	unsigned int nutrition,
-	unsigned int fullness,
-	unsigned int unhealth,
-	float mutation_amount,
-	size_t nn_input_num,
-	size_t* nn_layers,
-	size_t nn_layer_num
-);
-
-*/
