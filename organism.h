@@ -20,7 +20,7 @@ void Organism_eat(struct Organism* self, unsigned int nutrients);
 
 void Organism_tick(struct Organism* self);
 
-char Organism_dead(const struct Organism* self);
+int Organism_dead(const struct Organism* self);
 
 typedef enum {
 	MOVE_UP,

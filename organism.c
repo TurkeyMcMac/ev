@@ -23,7 +23,7 @@ void Organism_tick(struct Organism* self) {
 	self->fullness -= self->unhealth;
 }
 
-char Organism_dead(const struct Organism* self) {
+int Organism_dead(const struct Organism* self) {
 	return self->fullness <= 0;
 }
 
