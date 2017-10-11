@@ -22,6 +22,8 @@ void Organism_tick(struct Organism* self);
 
 int Organism_dead(const struct Organism* self);
 
+void Organism_drop(struct Organism* self);
+
 typedef enum {
 	MOVE_UP,
 	MOVE_DOWN,

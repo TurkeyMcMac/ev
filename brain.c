@@ -41,6 +41,10 @@ struct Neuron Neuron_random(float amount, size_t weight_num, float threshold) {
 	return n;
 }
 
+void Neuron_drop(struct Neuron* self) {
+	free(self->weights);
+}
+
 struct Layer {
 	struct Neuron* neurons;
 	size_t neuron_num;
@@ -76,6 +80,13 @@ struct Layer Layer_random(float amount, size_t neuron_num, size_t weight_num) {
 	l.neuron_num = neuron_num;
 
 	return l;
+}
+
+void Layer_drop(struct Layer* self) {
+	for (size_t i = 0; i < self->neuron_num; ++i)
+		Neuron_drop(&self->neurons[i]);
+
+	free(self->neurons);
 }
 
 char* Brain_compute(const struct Brain* self, const char* input) {
@@ -120,6 +131,12 @@ struct Brain Brain_random(float amount, size_t input_num, const size_t* layers, 
 	return b;
 }
 
+void Brain_drop(struct Brain* self) {
+	for (size_t i = 0; i < self->layer_num; ++i)
+		Layer_drop(&self->layers[i]);
+
+	free(self->layers);
+}
 /*
 #include <stdio.h>
 #include <time.h>

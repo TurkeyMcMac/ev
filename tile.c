@@ -39,8 +39,11 @@ int Tile_solid(const struct Tile* self) {
 	return self->tag == Tile_ROCK || self->tag == Tile_ORGANISM;
 }
 
-int Tile_shift(struct Tile* self, struct Tile* dest) {
+int Tile_org_shift(struct Tile* self, struct Tile* dest) {
 	if (!Tile_solid(dest)) {
+		if (dest->tag == Tile_FOOD)
+			Organism_eat(&self->val.org, dest->val.nutrients);
+
 		dest->tag = self->tag;
 		dest->val = self->val;
 

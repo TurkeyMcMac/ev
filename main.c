@@ -18,8 +18,8 @@ const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, 4};
 const size_t WORLD_WIDTH = 100;
 const size_t WORLD_HEIGHT = 50;
 
-const unsigned int FOOD_START_NUTRITION = 10;
-const unsigned int ORG_START_FULLNESS = 10;
+const unsigned int FOOD_START_NUTRITION = 50;
+const unsigned int ORG_START_FULLNESS = 100;
 const unsigned int ORG_START_UNHEALTH = 0;
 const float START_MUTATION_AMOUNT = 1.0;
 

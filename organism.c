@@ -4,6 +4,7 @@
 
 #include <malloc.h>
 #include <stddef.h>
+
 struct Organism Organism_new(unsigned int fullness, unsigned int unhealth, struct Brain brain) {
 	struct Organism o;
 	o.fullness = fullness;
@@ -16,15 +17,22 @@ struct Organism Organism_new(unsigned int fullness, unsigned int unhealth, struc
 void Organism_eat(struct Organism* self, unsigned int nutrients) {
 	self->fullness += nutrients;
 
-	if (self->unhealth > 1) --(self->unhealth);
+	if (self->unhealth > nutrients) self->unhealth -= nutrients;
+	else self->unhealth = 0;
 }
 
 void Organism_tick(struct Organism* self) {
-	self->fullness -= self->unhealth;
+	if (self->fullness > self->unhealth)
+		self->fullness -= self->unhealth++;
+	else self->fullness = 0;
 }
 
 int Organism_dead(const struct Organism* self) {
-	return self->fullness <= 0;
+	return self->fullness == 0;
+}
+
+void Organism_drop(struct Organism* self) {
+	Brain_drop(&self->brain);
 }
 
 MOVE Organism_react(const struct Organism* self, char* tiles) {

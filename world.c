@@ -65,6 +65,15 @@ void World_update(struct World* self) {
 			struct Tile* tile = World_get_unchecked(self, x, y);
 
 			if (tile->tag == Tile_ORGANISM && !skip_on_this_line[x]) {
+				Organism_tick(&tile->val.org);
+				if (Organism_dead(&tile->val.org)) {
+					Organism_drop(&tile->val.org);
+
+					*tile = Tile_empty();
+
+					continue;
+				}
+
 				char* input = calloc(32, sizeof(char));
 				World_vicinity(self, x, y, input);
 
@@ -76,7 +85,7 @@ void World_update(struct World* self) {
 							x,
 							World_wrap_y_u(self, y, 1));
 
-						Tile_shift(tile, dest);
+						Tile_org_shift(tile, dest);
 						break;
 					case MOVE_DOWN:
 						dest = World_get_unchecked(
@@ -84,7 +93,7 @@ void World_update(struct World* self) {
 							x,
 							World_wrap_y_d(self, y, 1));
 						// Skip updating the tile below this because there will be this creature
-						if (Tile_shift(tile, dest))
+						if (Tile_org_shift(tile, dest))
 							skip_on_next_line[x] = 1;
 						break;
 					case MOVE_RIGHT:
@@ -93,7 +102,7 @@ void World_update(struct World* self) {
 							World_wrap_x_r(self, x, 1),
 							y);
 						// Skip updating the next tile since this organism will be there
-						if (Tile_shift(tile, dest)) ++x;
+						if (Tile_org_shift(tile, dest)) ++x;
 						break;
 					case MOVE_LEFT:
 						dest = World_get_unchecked(
@@ -101,7 +110,7 @@ void World_update(struct World* self) {
 							World_wrap_x_l(self, x, 1),
 							y);
 
-						Tile_shift(tile, dest);
+						Tile_org_shift(tile, dest);
 						break;
 					default:;
 				}
