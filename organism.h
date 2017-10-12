@@ -10,11 +10,10 @@
 
 struct Organism {
 	unsigned int fullness;
-	unsigned int unhealth;
 	struct Brain brain;
 };
 
-struct Organism Organism_new(unsigned int fullness, unsigned int unhealth, struct Brain brain);
+struct Organism Organism_new(unsigned int fullness, struct Brain brain);
 
 void Organism_eat(struct Organism* self, unsigned int nutrients);
 

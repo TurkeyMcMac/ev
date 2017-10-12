@@ -12,7 +12,6 @@ struct World {
 	size_t height;
 	struct Tile* tiles;
 	unsigned int fullness;
-	unsigned int unhealth;
 	float start_mutation;
 	size_t nn_input_num;
 	size_t* nn_layers;
@@ -27,7 +26,6 @@ struct World World_random(
 	TILE_SEED tile_seed,
 	unsigned int nutrition,
 	unsigned int fullness,
-	unsigned int unhealth,
 	float mutation_amount,
 	size_t nn_input_num,
 	size_t* nn_layers,

@@ -20,7 +20,6 @@ const size_t WORLD_HEIGHT = 50;
 
 const unsigned int FOOD_START_NUTRITION = 100;
 const unsigned int ORG_START_FULLNESS = 1000;
-const unsigned int ORG_START_UNHEALTH = 0;
 const float START_MUTATION_AMOUNT = 1.0;
 
 const float MUTATION_AMOUNT = 0.01;
@@ -41,7 +40,6 @@ int main() {
 		SPAWN_SEED,
 		FOOD_START_NUTRITION,
 		ORG_START_FULLNESS,
-		ORG_START_UNHEALTH,
 		START_MUTATION_AMOUNT,
 		NN_INPUT_NUM,
 		(size_t*)&NN_LAYERS,

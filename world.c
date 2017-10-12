@@ -14,7 +14,6 @@ struct World World_random(
 	TILE_SEED tile_seed,
 	unsigned int nutrition,
 	unsigned int fullness,
-	unsigned int unhealth,
 	float start_mutation,
 	size_t nn_input_num,
 	size_t* nn_layers,
@@ -27,7 +26,6 @@ struct World World_random(
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 
 	w.fullness = fullness;
-	w.unhealth = unhealth;
 	w.start_mutation = start_mutation;
 	w.nn_input_num = nn_input_num;
 	w.nn_layers = nn_layers;
@@ -45,7 +43,6 @@ struct World World_random(
 			case Tile_ORGANISM:
 				w.tiles[i] = Tile_organism(Organism_new(
 					fullness,
-					unhealth,
 					Brain_random(
 						start_mutation,
 						nn_input_num,
@@ -73,7 +70,6 @@ void World_reseed(struct World* self, size_t target) {
 	while (self->alive_counter < target) {
 		*World_get_empty(self) = Tile_organism(Organism_new(
 			self->fullness,
-			self->unhealth,
 			Brain_random(
 				self->start_mutation,
 				self->nn_input_num,
