@@ -109,32 +109,36 @@ void World_update(struct World* self) {
 				char* input = calloc(32, sizeof(char));
 				World_vicinity(self, x, y, input);
 
+				struct Reaction reaction = Organism_react(&tile->val.org, input);
+
 				struct Tile* dest;
-				switch (Organism_react(&tile->val.org, input)) {
+				switch (reaction.move) {
 					case MOVE_UP:
 						dest = World_get_unchecked(
 							self,
 							x,
 							World_wrap_y_u(self, y, 1));
 
-						Tile_org_shift(tile, dest);
+						if (Tile_solid(dest)) goto end;
 						break;
 					case MOVE_DOWN:
 						dest = World_get_unchecked(
 							self,
 							x,
 							World_wrap_y_d(self, y, 1));
-						// Skip updating the tile below this because there will be this creature
-						if (Tile_org_shift(tile, dest))
+
+						if (!Tile_solid(dest))
 							skip_on_next_line[x] = 1;
+						else goto end;
 						break;
 					case MOVE_RIGHT:
 						dest = World_get_unchecked(
 							self,
 							World_wrap_x_r(self, x, 1),
 							y);
-						// Skip updating the next tile since this organism will be there
-						if (Tile_org_shift(tile, dest)) ++x;
+
+						if (!Tile_solid(dest)) ++x;
+						else goto end;
 						break;
 					case MOVE_LEFT:
 						dest = World_get_unchecked(
@@ -142,11 +146,22 @@ void World_update(struct World* self) {
 							World_wrap_x_l(self, x, 1),
 							y);
 
-						Tile_org_shift(tile, dest);
+						if (Tile_solid(dest)) goto end;
 						break;
-					default:;
+					default: goto end;
 				}
 
+				if (reaction.baby) {
+					Tile_org_set(dest, Organism_baby(&tile->val.org, 0.01));
+
+					++self->alive_counter;
+				} else {
+					Tile_org_set(dest, tile->val.org);
+
+					tile->tag = Tile_EMPTY;
+				}
+
+				end:
 				free(input);
 			}
 		}

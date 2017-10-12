@@ -2,7 +2,7 @@
 
 #define _ORGANISM_H
 
-#define ORGANISM_OUTPUT_NUM 4
+#define ORGANISM_OUTPUT_NUM 5
 
 #include "brain.h"
 
@@ -32,6 +32,13 @@ typedef enum {
 	MOVE_NOWHERE
 } MOVE;
 
-MOVE Organism_react(const struct Organism* self, char* tiles);
+struct Reaction {
+	MOVE move;
+	char baby;
+};
+
+struct Reaction Organism_react(const struct Organism* self, char* tiles);
+
+struct Organism Organism_baby(struct Organism* self, float mutation);
 
 #endif

@@ -13,7 +13,7 @@ const TILE_SEED SPAWN_SEED = {
 
 const size_t NN_INPUT_NUM = 32;
 const size_t NN_LAYER_NUM = 3;
-const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, 4};
+const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, ORGANISM_OUTPUT_NUM};
 
 const size_t WORLD_WIDTH = 200;
 const size_t WORLD_HEIGHT = 50;

@@ -35,7 +35,7 @@ struct Tile Tile_organism(struct Organism org);
 
 int Tile_solid(const struct Tile* self);
 
-int Tile_org_shift(struct Tile* self, struct Tile* dest);
+void Tile_org_set(struct Tile* self, struct Organism org);
 
 typedef struct {
 	unsigned char organism;

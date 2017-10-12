@@ -35,29 +35,46 @@ void Organism_drop(struct Organism* self) {
 	Brain_drop(&self->brain);
 }
 
-MOVE Organism_react(const struct Organism* self, char* tiles) {
+struct Reaction Organism_react(const struct Organism* self, char* tiles) {
+	struct Reaction r;
+
 	char* out = Brain_compute(&self->brain, tiles);
 
-	for (size_t i = 0; i < ORGANISM_OUTPUT_NUM; ++i) {
+	r.baby = out[4];
+
+	for (size_t i = 0; i < 4; ++i) {
 		if (out[i]) {
+			MOVE move;
 			switch (i) {
 				case 0:
-					free(out);
-					return MOVE_UP;
+					move = MOVE_UP;
+					break;
 				case 1:
-					free(out);
-					return MOVE_DOWN;
+					move = MOVE_DOWN;
+					break;
 				case 2:
-					free(out);
-					return MOVE_RIGHT;
+					move = MOVE_RIGHT;
+					break;
 				case 3:
-					free(out);
-					return MOVE_LEFT;
+					move = MOVE_LEFT;
+					break;
 			}
+
+			r.move = move;
+
+			free(out);
+
+			return r;
 		}
 	}
 
+	r.move = MOVE_NOWHERE;
+
 	free(out);
-	return MOVE_NOWHERE;
+
+	return r;
 }
 
+struct Organism Organism_baby(struct Organism* self, float mutation) {
+	return Organism_new(self->fullness /= 2, 0, Brain_mutate(&self->brain, mutation));
+}
