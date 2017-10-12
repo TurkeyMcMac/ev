@@ -15,7 +15,7 @@ const size_t NN_INPUT_NUM = 32;
 const size_t NN_LAYER_NUM = 3;
 const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, 4};
 
-const size_t WORLD_WIDTH = 100;
+const size_t WORLD_WIDTH = 200;
 const size_t WORLD_HEIGHT = 50;
 
 const unsigned int FOOD_START_NUTRITION = 100;
@@ -27,6 +27,8 @@ const struct timespec TICK_DELAY = {
 	.tv_sec = 0,
 	.tv_nsec = 100000000
 };
+
+const size_t TARGET_POPULATION = 30;
 
 int main() {
 	srand(time(NULL));
@@ -45,6 +47,8 @@ int main() {
 
 	while (1) {
 		World_update(&w);
+		World_reseed(&w, TARGET_POPULATION);
+		*World_get_empty(&w) = Tile_food(FOOD_START_NUTRITION);
 
 		World_draw(&w, stdout);
 		printf("\n\n\n");

@@ -11,6 +11,13 @@ struct World {
 	size_t width;
 	size_t height;
 	struct Tile* tiles;
+	unsigned int fullness;
+	unsigned int unhealth;
+	float mutation;
+	size_t nn_input_num;
+	size_t* nn_layers;
+	size_t nn_layer_num;
+	size_t alive_counter;
 };
 
 struct World World_random(
@@ -28,9 +35,13 @@ struct World World_random(
 
 void World_update(struct World* self);
 
+void World_reseed(struct World* self, size_t target);
+
 struct Tile* World_get_unchecked(struct World* self, size_t x, size_t y);
 
 struct Tile* World_get(struct World* self, size_t x, size_t y);
+
+struct Tile* World_get_empty(struct World* self);
 
 size_t World_wrap_x_r(const struct World* self, size_t x, size_t x_off);
 

@@ -4,7 +4,7 @@
 #include "organism.h"
 #include "tile.h"
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -24,6 +24,16 @@ struct World World_random(
 	w.width = width;
 	w.height = height;
 	w.tiles = malloc(width * height * sizeof(struct Tile));
+
+	w.fullness = fullness;
+	w.unhealth = unhealth;
+	w.mutation = mutation;
+	w.nn_input_num = nn_input_num;
+	w.nn_layers = nn_layers;
+	w.nn_layer_num = nn_layer_num;
+
+	w.alive_counter = 0;
+
 	for (size_t i = 0; i < width * height; ++i) {
 		switch (TILE_SEED_pick(tile_seed)) {
 			case Tile_EMPTY:
@@ -40,6 +50,9 @@ struct World World_random(
 						nn_layer_num
 					)
 				));
+
+				++w.alive_counter;
+
 				break;
 			case Tile_FOOD:
 				w.tiles[i] = Tile_food(nutrition);
@@ -51,6 +64,23 @@ struct World World_random(
 	}
 
 	return w;
+}
+
+void World_reseed(struct World* self, size_t target) {
+	while (self->alive_counter < target) {
+		*World_get_empty(self) = Tile_organism(Organism_new(
+			self->fullness,
+			self->unhealth,
+			Brain_random(
+				self->mutation,
+				self->nn_input_num,
+				self->nn_layers,
+				self->nn_layer_num
+			)
+		));
+
+		++self->alive_counter;
+	}
 }
 
 // TODO: This function needs to be split up into a few smaller ones.
@@ -70,6 +100,8 @@ void World_update(struct World* self) {
 					Organism_drop(&tile->val.org);
 
 					*tile = Tile_empty();
+
+					--self->alive_counter;
 
 					continue;
 				}
@@ -134,6 +166,16 @@ struct Tile* World_get(struct World* self, size_t x, size_t y) {
 	if (x < self->width && y < self->height)
 		return World_get_unchecked(self, x, y);
 	else return NULL;
+}
+
+struct Tile* World_get_empty(struct World* self) {
+	struct Tile* tile;
+
+	do {
+		tile = &self->tiles[(size_t)rand() % (self->width * self->height)];
+	} while (tile->tag != Tile_EMPTY);
+
+	return tile;
 }
 
 size_t World_wrap_x_r(const struct World* self, size_t x, size_t x_off) {
