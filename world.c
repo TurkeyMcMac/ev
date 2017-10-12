@@ -15,10 +15,11 @@ struct World World_random(
 	unsigned int nutrition,
 	unsigned int fullness,
 	unsigned int unhealth,
-	float mutation,
+	float start_mutation,
 	size_t nn_input_num,
 	size_t* nn_layers,
-	size_t nn_layer_num
+	size_t nn_layer_num,
+	float mutation
 ) {
 	struct World w;
 	w.width = width;
@@ -27,10 +28,12 @@ struct World World_random(
 
 	w.fullness = fullness;
 	w.unhealth = unhealth;
-	w.mutation = mutation;
+	w.start_mutation = start_mutation;
 	w.nn_input_num = nn_input_num;
 	w.nn_layers = nn_layers;
 	w.nn_layer_num = nn_layer_num;
+
+	w.mutation = mutation;
 
 	w.alive_counter = 0;
 
@@ -44,7 +47,7 @@ struct World World_random(
 					fullness,
 					unhealth,
 					Brain_random(
-						mutation,
+						start_mutation,
 						nn_input_num,
 						nn_layers,
 						nn_layer_num
@@ -72,7 +75,7 @@ void World_reseed(struct World* self, size_t target) {
 			self->fullness,
 			self->unhealth,
 			Brain_random(
-				self->mutation,
+				self->start_mutation,
 				self->nn_input_num,
 				self->nn_layers,
 				self->nn_layer_num
@@ -128,6 +131,7 @@ void World_update(struct World* self) {
 							World_wrap_y_d(self, y, 1));
 
 						if (!Tile_solid(dest))
+							// Skip here on the next line to prevent double-updating
 							skip_on_next_line[x] = 1;
 						else goto end;
 						break;
@@ -137,6 +141,7 @@ void World_update(struct World* self) {
 							World_wrap_x_r(self, x, 1),
 							y);
 
+						// Skip the next tile to prevent double-updating
 						if (!Tile_solid(dest)) ++x;
 						else goto end;
 						break;
@@ -152,7 +157,7 @@ void World_update(struct World* self) {
 				}
 
 				if (reaction.baby) {
-					Tile_org_set(dest, Organism_baby(&tile->val.org, 0.01));
+					Tile_org_set(dest, Organism_baby(&tile->val.org, self->mutation));
 
 					++self->alive_counter;
 				} else {

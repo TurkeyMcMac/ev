@@ -13,11 +13,12 @@ struct World {
 	struct Tile* tiles;
 	unsigned int fullness;
 	unsigned int unhealth;
-	float mutation;
+	float start_mutation;
 	size_t nn_input_num;
 	size_t* nn_layers;
 	size_t nn_layer_num;
 	size_t alive_counter;
+	float mutation;
 };
 
 struct World World_random(
@@ -30,7 +31,8 @@ struct World World_random(
 	float mutation_amount,
 	size_t nn_input_num,
 	size_t* nn_layers,
-	size_t nn_layer_num
+	size_t nn_layer_num,
+	float mutation
 );
 
 void World_update(struct World* self);

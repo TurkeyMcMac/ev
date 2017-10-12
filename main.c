@@ -23,6 +23,8 @@ const unsigned int ORG_START_FULLNESS = 1000;
 const unsigned int ORG_START_UNHEALTH = 0;
 const float START_MUTATION_AMOUNT = 1.0;
 
+const float MUTATION_AMOUNT = 0.01;
+
 const struct timespec TICK_DELAY = {
 	.tv_sec = 0,
 	.tv_nsec = 100000000
@@ -43,7 +45,9 @@ int main() {
 		START_MUTATION_AMOUNT,
 		NN_INPUT_NUM,
 		(size_t*)&NN_LAYERS,
-		NN_LAYER_NUM);
+		NN_LAYER_NUM,
+		MUTATION_AMOUNT
+	);
 
 	while (1) {
 		World_update(&w);
