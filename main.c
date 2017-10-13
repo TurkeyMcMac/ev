@@ -8,18 +8,19 @@
 const TILE_SEED SPAWN_SEED = {
 	.organism = 1,
 	.food = 10,
-	.rock = 5
+	.rock = 10
 };
 
-const size_t NN_INPUT_NUM = 32;
+const size_t NN_INPUT_NUM = 33;
 const size_t NN_LAYER_NUM = 3;
 const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, ORGANISM_OUTPUT_NUM};
 
 const size_t WORLD_WIDTH = 200;
 const size_t WORLD_HEIGHT = 50;
 
-const unsigned int FOOD_START_NUTRITION = 100;
+const unsigned int FOOD_START_NUTRITION = 50;
 const unsigned int ORG_START_FULLNESS = 1000;
+const unsigned int ORG_FULLNESS_THRESHOLD_MAX = 500;
 const float START_MUTATION_AMOUNT = 1.0;
 
 const float MUTATION_AMOUNT = 0.01;
@@ -40,6 +41,7 @@ int main() {
 		SPAWN_SEED,
 		FOOD_START_NUTRITION,
 		ORG_START_FULLNESS,
+		ORG_FULLNESS_THRESHOLD_MAX,
 		START_MUTATION_AMOUNT,
 		NN_INPUT_NUM,
 		(size_t*)&NN_LAYERS,

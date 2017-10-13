@@ -4,9 +4,10 @@
 
 #include <stdlib.h>
 
-struct Organism Organism_new(unsigned int fullness, struct Brain brain) {
+struct Organism Organism_new(unsigned int fullness, unsigned int fullness_threshold, struct Brain brain) {
 	struct Organism o;
 	o.fullness = fullness;
+	o.fullness_threshold = fullness_threshold;
 	o.brain = brain;
 
 	return o;
@@ -30,6 +31,8 @@ void Organism_drop(struct Organism* self) {
 
 struct Reaction Organism_react(const struct Organism* self, char* tiles) {
 	struct Reaction r;
+
+	tiles[32] = self->fullness > self->fullness_threshold;
 
 	char* out = Brain_compute(&self->brain, tiles);
 
@@ -69,5 +72,10 @@ struct Reaction Organism_react(const struct Organism* self, char* tiles) {
 }
 
 struct Organism Organism_baby(struct Organism* self, float mutation) {
-	return Organism_new(self->fullness /= 2, Brain_mutate(&self->brain, mutation));
+	return Organism_new(
+		self->fullness /= 2,
+		rand() % 2 == 0 ? // TODO: Make this dependent on mutation rate
+			self->fullness_threshold + 1:
+			self->fullness_threshold - 1,
+		Brain_mutate(&self->brain, mutation));
 }

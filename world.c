@@ -8,12 +8,14 @@
 #include <string.h>
 #include <stdio.h>
 
+// TODO: Use a struct as input rather than have so many arguments
 struct World World_random(
 	size_t width,
 	size_t height,
 	TILE_SEED tile_seed,
 	unsigned int nutrition,
 	unsigned int fullness,
+	unsigned int fullness_threshold_max,
 	float start_mutation,
 	size_t nn_input_num,
 	size_t* nn_layers,
@@ -26,6 +28,7 @@ struct World World_random(
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 
 	w.fullness = fullness;
+	w.fullness_threshold_max = fullness_threshold_max;
 	w.start_mutation = start_mutation;
 	w.nn_input_num = nn_input_num;
 	w.nn_layers = nn_layers;
@@ -43,6 +46,7 @@ struct World World_random(
 			case Tile_ORGANISM:
 				w.tiles[i] = Tile_organism(Organism_new(
 					fullness,
+					(unsigned int)rand() % fullness_threshold_max,
 					Brain_random(
 						start_mutation,
 						nn_input_num,
@@ -70,6 +74,7 @@ void World_reseed(struct World* self, size_t target) {
 	while (self->alive_counter < target) {
 		*World_get_empty(self) = Tile_organism(Organism_new(
 			self->fullness,
+			(unsigned int)rand() % self->fullness_threshold_max,
 			Brain_random(
 				self->start_mutation,
 				self->nn_input_num,
@@ -105,7 +110,7 @@ void World_update(struct World* self) {
 					continue;
 				}
 
-				char* input = calloc(32, sizeof(char));
+				char* input = calloc(33, sizeof(char));
 				World_vicinity(self, x, y, input);
 
 				struct Reaction reaction = Organism_react(&tile->val.org, input);
