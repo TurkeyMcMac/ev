@@ -87,7 +87,6 @@ void World_reseed(struct World* self, size_t target) {
 	}
 }
 
-// TODO: This function needs to be split up into a few smaller ones.
 void World_update(struct World* self) {
 	char* skip_on_this_line = calloc(self->width, sizeof(char));
 	char* skip_on_next_line = malloc(self->width);
