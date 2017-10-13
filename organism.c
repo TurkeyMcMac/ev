@@ -2,8 +2,7 @@
 
 #include "brain.h"
 
-#include <malloc.h>
-#include <stddef.h>
+#include <stdlib.h>
 
 struct Organism Organism_new(unsigned int fullness, struct Brain brain) {
 	struct Organism o;
