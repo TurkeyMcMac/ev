@@ -8,33 +8,25 @@
 #include <string.h>
 #include <stdio.h>
 
-// TODO: Use a struct as input rather than have so many arguments
 struct World World_random(
 	size_t width,
 	size_t height,
 	TILE_SEED tile_seed,
-	unsigned int nutrition,
-	unsigned int fullness,
-	unsigned int fullness_threshold_max,
-	float start_mutation,
-	size_t nn_input_num,
-	size_t* nn_layers,
-	size_t nn_layer_num,
-	float mutation
+	struct WorldConfig conf
 ) {
 	struct World w;
 	w.width = width;
 	w.height = height;
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 
-	w.fullness = fullness;
-	w.fullness_threshold_max = fullness_threshold_max;
-	w.start_mutation = start_mutation;
-	w.nn_input_num = nn_input_num;
-	w.nn_layers = nn_layers;
-	w.nn_layer_num = nn_layer_num;
+	w.fullness = conf.fullness;
+	w.fullness_threshold_max = conf.fullness_threshold_max;
+	w.start_mutation = conf.start_mutation;
+	w.nn_input_num = conf.nn_input_num;
+	w.nn_layers = conf.nn_layers;
+	w.nn_layer_num = conf.nn_layer_num;
 
-	w.mutation = mutation;
+	w.mutation = conf.mutation;
 
 	w.alive_counter = 0;
 
@@ -45,13 +37,13 @@ struct World World_random(
 				break;
 			case Tile_ORGANISM:
 				w.tiles[i] = Tile_organism(Organism_new(
-					fullness,
-					(unsigned int)rand() % fullness_threshold_max,
+					conf.fullness,
+					(unsigned int)rand() % conf.fullness_threshold_max,
 					Brain_random(
-						start_mutation,
-						nn_input_num,
-						nn_layers,
-						nn_layer_num
+						conf.start_mutation,
+						conf.nn_input_num,
+						conf.nn_layers,
+						conf.nn_layer_num
 					)
 				));
 
@@ -59,7 +51,7 @@ struct World World_random(
 
 				break;
 			case Tile_FOOD:
-				w.tiles[i] = Tile_food(nutrition);
+				w.tiles[i] = Tile_food(conf.nutrition);
 				break;
 			case Tile_ROCK:
 				w.tiles[i] = Tile_rock();

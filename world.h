@@ -21,18 +21,22 @@ struct World {
 	float mutation;
 };
 
+struct WorldConfig {
+	unsigned int nutrition;
+	unsigned int fullness;
+	unsigned int fullness_threshold_max;
+	float start_mutation;
+	size_t nn_input_num;
+	size_t* nn_layers;
+	size_t nn_layer_num;
+	float mutation;
+};
+
 struct World World_random(
 	size_t width,
 	size_t height,
 	TILE_SEED tile_seed,
-	unsigned int nutrition,
-	unsigned int fullness,
-	unsigned int fullness_threshold_max,
-	float mutation_amount,
-	size_t nn_input_num,
-	size_t* nn_layers,
-	size_t nn_layer_num,
-	float mutation
+	struct WorldConfig conf
 );
 
 void World_update(struct World* self);
