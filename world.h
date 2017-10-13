@@ -42,7 +42,7 @@ struct Tile* World_get_unchecked(struct World* self, size_t x, size_t y);
 
 struct Tile* World_get(struct World* self, size_t x, size_t y);
 
-struct Tile* World_get_empty(struct World* self);
+struct Tile* World_select(struct World* self, enum TileTag kind);
 
 size_t World_wrap_x_r(const struct World* self, size_t x, size_t x_off);
 

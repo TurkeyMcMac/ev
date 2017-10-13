@@ -59,7 +59,7 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 
 void World_reseed(struct World* self, size_t target) {
 	while (self->alive_counter < target) {
-		*World_get_empty(self) = Tile_organism(Organism_new(
+		*World_select(self, Tile_EMPTY) = Tile_organism(Organism_new(
 			self->fullness,
 			(unsigned int)rand() % self->fullness_threshold_max,
 			Brain_random(
@@ -175,12 +175,12 @@ struct Tile* World_get(struct World* self, size_t x, size_t y) {
 	else return NULL;
 }
 
-struct Tile* World_get_empty(struct World* self) {
+struct Tile* World_select(struct World* self, enum TileTag kind) {
 	struct Tile* tile;
 
 	do {
 		tile = &self->tiles[(size_t)rand() % (self->width * self->height)];
-	} while (tile->tag != Tile_EMPTY);
+	} while (tile->tag != kind);
 
 	return tile;
 }
