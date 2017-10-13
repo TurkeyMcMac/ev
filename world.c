@@ -8,12 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 
-struct World World_random(
-	size_t width,
-	size_t height,
-	TILE_SEED tile_seed,
-	struct WorldConfig conf
-) {
+struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, struct WorldConfig conf) {
 	struct World w;
 	w.width = width;
 	w.height = height;

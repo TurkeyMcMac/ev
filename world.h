@@ -32,12 +32,7 @@ struct WorldConfig {
 	float mutation;
 };
 
-struct World World_random(
-	size_t width,
-	size_t height,
-	TILE_SEED tile_seed,
-	struct WorldConfig conf
-);
+struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, struct WorldConfig conf);
 
 void World_update(struct World* self);
 
