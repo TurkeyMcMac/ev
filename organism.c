@@ -30,6 +30,9 @@ void Organism_drop(struct Organism* self) {
 }
 
 struct Reaction Organism_react(const struct Organism* self, char* tiles) {
+	#define _check_move_output(i, m) \
+		do { if (out[i]) { r.move = m; goto end; } } while (0)
+
 	struct Reaction r;
 
 	tiles[32] = self->fullness > self->fullness_threshold;
@@ -38,33 +41,14 @@ struct Reaction Organism_react(const struct Organism* self, char* tiles) {
 
 	r.baby = out[4];
 
-	for (size_t i = 0; i < 4; ++i) {
-		if (out[i]) {
-			MOVE move;
-			switch (i) {
-				case 0:
-					move = MOVE_UP;
-					break;
-				case 1:
-					move = MOVE_DOWN;
-					break;
-				case 2:
-					move = MOVE_RIGHT;
-					break;
-				case 3:
-					move = MOVE_LEFT;
-					break;
-			}
-
-			r.move = move;
-
-			free(out);
-
-			return r;
-		}
-	}
+	_check_move_output(0, MOVE_UP);
+	_check_move_output(1, MOVE_DOWN);
+	_check_move_output(2, MOVE_RIGHT);
+	_check_move_output(3, MOVE_LEFT);
 
 	r.move = MOVE_NOWHERE;
+
+	end:
 
 	free(out);
 
