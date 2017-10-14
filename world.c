@@ -14,14 +14,7 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 	w.height = height;
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 
-	w.fullness = conf.fullness;
-	w.fullness_threshold_max = conf.fullness_threshold_max;
-	w.start_mutation = conf.start_mutation;
-	w.nn_input_num = conf.nn_input_num;
-	w.nn_layers = conf.nn_layers;
-	w.nn_layer_num = conf.nn_layer_num;
-
-	w.mutation = conf.mutation;
+	w.conf = conf;
 
 	w.alive_counter = 0;
 
@@ -60,18 +53,23 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 void World_reseed(struct World* self, size_t target) {
 	while (self->alive_counter < target) {
 		*World_select(self, Tile_EMPTY) = Tile_organism(Organism_new(
-			self->fullness,
-			(unsigned int)rand() % self->fullness_threshold_max,
+			self->conf.fullness,
+			(unsigned int)rand() % self->conf.fullness_threshold_max,
 			Brain_random(
-				self->start_mutation,
-				self->nn_input_num,
-				self->nn_layers,
-				self->nn_layer_num
+				self->conf.start_mutation,
+				self->conf.nn_input_num,
+				self->conf.nn_layers,
+				self->conf.nn_layer_num
 			)
 		));
 
 		++self->alive_counter;
 	}
+}
+
+void World_add_food(struct World* self, size_t amount) {
+	for (size_t i = 0; i < amount; ++i)
+		*World_select(self, Tile_EMPTY) = Tile_food(self->conf.nutrition);
 }
 
 void World_update(struct World* self) {
@@ -144,7 +142,7 @@ void World_update(struct World* self) {
 				}
 
 				if (reaction.baby) {
-					Tile_org_set(dest, Organism_baby(&tile->val.org, self->mutation));
+					Tile_org_set(dest, Organism_baby(&tile->val.org, self->conf.mutation));
 
 					++self->alive_counter;
 				} else {
