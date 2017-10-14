@@ -56,7 +56,7 @@ int main() {
 
 		if (++tick % TICKS_PER_FRAME == 0) {
 			World_draw(&w, stdout);
-			printf("\n\n\n");
+			printf("\nalive: %ld\n", World_alive_count(&w));
 
 			nanosleep(&FRAME_DELAY, NULL);
 		}

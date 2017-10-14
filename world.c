@@ -240,6 +240,10 @@ void World_vicinity(struct World* self, size_t x, size_t y, char* dest) {
 	encode_tile(World_get_unchecked(self, x,   y_d), 7, dest);
 }
 
+size_t World_alive_count(const struct World* self) {
+	return self->alive_counter;
+}
+
 void World_draw(const struct World* self, FILE* dest) {
 	Tile_draw(self->tiles, dest);
 
