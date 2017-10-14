@@ -19,7 +19,7 @@ const size_t NN_LAYER_NUM = 3;
 const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, ORGANISM_OUTPUT_NUM};
 
 const struct WorldConfig WORLD_CONFIG = {
-	.nutrition = 30,
+	.nutrition = 70,
 	.fullness = 1000,
 	.fullness_threshold_max = 500,
 	.start_mutation = 1.0,
@@ -34,7 +34,7 @@ const size_t TARGET_POPULATION = 30;
 
 const struct timespec TICK_DELAY = {
 	.tv_sec = 0,
-	.tv_nsec = 100000000
+	.tv_nsec = 80000000
 };
 
 int main() {
@@ -47,14 +47,17 @@ int main() {
 		WORLD_CONFIG
 	);
 
+	long tick = 0;
 	while (1) {
 		World_update(&w);
 		World_reseed(&w, TARGET_POPULATION);
-		World_add_food(&w, 2);
+		World_add_food(&w, 1);
+		
+		if (++tick % 100 == 0) {
+			World_draw(&w, stdout);
+			printf("\n\n\n");
 
-		World_draw(&w, stdout);
-		printf("\n\n\n");
-
-		nanosleep(&TICK_DELAY, NULL);
+			nanosleep(&TICK_DELAY, NULL);
+		}
 	}
 }
