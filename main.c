@@ -11,7 +11,7 @@ const size_t WORLD_HEIGHT = 50;
 const TILE_SEED SPAWN_SEED = {
 	.organism = 1,
 	.food = 10,
-	.rock = 10
+	.rock = 2
 };
 
 const size_t NN_INPUT_NUM = 33;
@@ -19,7 +19,7 @@ const size_t NN_LAYER_NUM = 3;
 const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, ORGANISM_OUTPUT_NUM};
 
 const struct WorldConfig WORLD_CONFIG = {
-	.nutrition = 70,
+	.nutrition = 90,
 	.fullness = 1000,
 	.fullness_threshold_max = 500,
 	.start_mutation = 1.0,
