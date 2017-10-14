@@ -94,7 +94,7 @@ void World_update(struct World* self) {
 					continue;
 				}
 
-				char* input = calloc(33, sizeof(char));
+				char* input = calloc(self->conf.nn_input_num, sizeof(char));
 				World_vicinity(self, x, y, input);
 
 				struct Reaction reaction = Organism_react(&tile->val.org, input);
