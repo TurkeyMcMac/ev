@@ -32,7 +32,8 @@ const struct WorldConfig WORLD_CONFIG = {
 
 const size_t TARGET_POPULATION = 30;
 
-const struct timespec TICK_DELAY = {
+const unsigned long TICKS_PER_FRAME = 100;
+const struct timespec FRAME_DELAY = {
 	.tv_sec = 0,
 	.tv_nsec = 80000000
 };
@@ -47,17 +48,17 @@ int main() {
 		WORLD_CONFIG
 	);
 
-	long tick = 0;
+	unsigned long tick = 0;
 	while (1) {
 		World_update(&w);
 		World_reseed(&w, TARGET_POPULATION);
 		World_add_food(&w, 1);
-		
-		if (++tick % 100 == 0) {
+
+		if (++tick % TICKS_PER_FRAME == 0) {
 			World_draw(&w, stdout);
 			printf("\n\n\n");
 
-			nanosleep(&TICK_DELAY, NULL);
+			nanosleep(&FRAME_DELAY, NULL);
 		}
 	}
 }
