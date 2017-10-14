@@ -13,6 +13,7 @@ struct WorldConfig {
 	unsigned int fullness_threshold_max;
 	float start_mutation;
 	float mutation;
+	unsigned char mutation_chance;
 	size_t nn_input_num;
 	size_t* nn_layers;
 	size_t nn_layer_num;

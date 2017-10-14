@@ -1,5 +1,6 @@
 #include "brain.h"
 
+#include <string.h>
 #include <stdlib.h>
 
 struct Neuron {
@@ -16,6 +17,16 @@ char Neuron_compute(const struct Neuron* self, const char* input) {
 			sum += self->weights[i];
 
 	return sum > self->threshold;
+}
+
+struct Neuron Neuron_clone(const struct Neuron* self) {
+	struct Neuron n;
+	n.weights = malloc(self->weight_num * sizeof(float));
+	memcpy(n.weights, self->weights, self->weight_num);
+	n.weight_num = self->weight_num;
+	n.threshold = self->threshold;
+
+	return n;
 }
 
 struct Neuron Neuron_mutate(const struct Neuron* self, float amount) {
@@ -57,6 +68,17 @@ char* Layer_compute(const struct Layer* self, const char* input) {
 		output[i] = Neuron_compute(&self->neurons[i], input);
 
 	return output;
+}
+
+struct Layer Layer_clone(const struct Layer* self) {
+	struct Layer l;
+	l.neurons = malloc(self->neuron_num * sizeof(struct Neuron));
+	for (size_t i = 0; i < self->neuron_num; ++i)
+		l.neurons[i] = Neuron_clone(&self->neurons[i]);
+
+	l.neuron_num = self->neuron_num;
+
+	return l;
 }
 
 struct Layer Layer_mutate(const struct Layer* self, float amount) {
@@ -103,6 +125,17 @@ char* Brain_compute(const struct Brain* self, const char* input) {
 	}
 
 	return last_output;
+}
+
+struct Brain Brain_clone(const struct Brain* self) {
+	struct Brain b;
+	b.layers = malloc(self->layer_num * sizeof(struct Layer));
+	for (size_t i = 0; i < self->layer_num; ++i)
+		b.layers[i] = Layer_clone(&self->layers[i]);
+
+	b.layer_num = self->layer_num;
+
+	return b;
 }
 
 struct Brain Brain_mutate(const struct Brain* self, float amount) {

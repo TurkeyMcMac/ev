@@ -55,11 +55,15 @@ struct Reaction Organism_react(const struct Organism* self, char* tiles) {
 	return r;
 }
 
-struct Organism Organism_baby(struct Organism* self, float mutation) {
-	return Organism_new(
-		self->fullness /= 2,
-		rand() % 2 == 0 ? // TODO: Make this dependent on mutation rate
-			self->fullness_threshold + 1:
-			self->fullness_threshold - 1,
-		Brain_mutate(&self->brain, mutation));
+struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance) {
+	if ((unsigned char)rand() > mutation_chance)
+		return Organism_new(self->fullness, self->fullness_threshold, Brain_clone(&self->brain));
+	else
+		return Organism_new(
+			self->fullness /= 2,
+			rand() % 2 == 0 ?
+				self->fullness_threshold + 1:
+				self->fullness_threshold - 1,
+			Brain_mutate(&self->brain, mutation)
+		);
 }

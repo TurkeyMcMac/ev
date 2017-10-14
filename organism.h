@@ -39,6 +39,6 @@ struct Reaction {
 
 struct Reaction Organism_react(const struct Organism* self, char* tiles);
 
-struct Organism Organism_baby(struct Organism* self, float mutation);
+struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance);
 
 #endif

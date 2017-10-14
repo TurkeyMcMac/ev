@@ -19,11 +19,12 @@ const size_t NN_LAYER_NUM = 3;
 const size_t NN_LAYERS[NN_LAYER_NUM] = {16, 8, ORGANISM_OUTPUT_NUM};
 
 const struct WorldConfig WORLD_CONFIG = {
-	.nutrition = 50,
+	.nutrition = 30,
 	.fullness = 1000,
 	.fullness_threshold_max = 500,
 	.start_mutation = 1.0,
 	.mutation = 0.01,
+	.mutation_chance = 10,
 	.nn_input_num = NN_INPUT_NUM,
 	.nn_layers = (size_t*)&NN_LAYERS,
 	.nn_layer_num = NN_LAYER_NUM

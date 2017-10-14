@@ -15,6 +15,8 @@ char* Brain_compute(const struct Brain* self, const char* input);
 
 struct Brain Brain_random(float range, size_t input_num, const size_t* layers, size_t layer_num);
 
+struct Brain Brain_clone(const struct Brain* self);
+
 struct Brain Brain_mutate(const struct Brain* self, float amount);
 
 void Brain_drop(struct Brain* self);

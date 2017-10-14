@@ -142,7 +142,7 @@ void World_update(struct World* self) {
 				}
 
 				if (reaction.baby) {
-					Tile_org_set(dest, Organism_baby(&tile->val.org, self->conf.mutation));
+					Tile_org_set(dest, Organism_baby(&tile->val.org, self->conf.mutation, self->conf.mutation_chance));
 
 					++self->alive_counter;
 				} else {
