@@ -33,7 +33,7 @@ const int INVALID_ARGUMENT = 1;
 const int SHOWED_HELP = 4319; // This looks vaguely like 'help'
 const int OUT_OF_MEMORY = 14314150; // This looks a bit like 'mem is 0'
 
-const size_t INITIAL_INT_LIST_SIZE = 1;
+const size_t INITIAL_INT_LIST_SIZE = 4;
 ssize_t parse_integer_list(char* src, size_t* dst, size_t cap) {
 	char* end;
 	ssize_t l;
