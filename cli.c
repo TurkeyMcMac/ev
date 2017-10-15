@@ -35,19 +35,27 @@ const int OUT_OF_MEMORY = 14314150; // This looks a bit like 'mem is 0'
 
 const size_t INITIAL_INT_LIST_SIZE = 4;
 ssize_t parse_integer_list(char* src, size_t* dst, size_t cap) {
+	// The end of the last item in the list
 	char* end;
+	// The length of the list
 	ssize_t l;
+	//                     Increment end pointer to skip separator character
 	for (end = src, l = 0; *(end++) != '\0'; ++l) {
+		// Reallocate if capacity is too low
 		if (cap < l && !(dst = realloc(dst, (cap *= 2) * sizeof(size_t))))
 			return -1;
 
+		// Parse this item to base 10, setting end to the end of the digits
 		dst[l] = (size_t)strtol(end, &end, 10);
 	}
 
+	// Find the (currently out-of-bounds) end of the list
 	size_t* final = &dst[l];
 
+	// Make room for one more, casting off unnecessary capacity in the process
 	if (!(dst = realloc(dst, ++l * sizeof(size_t)))) return -1;
 
+	// Set the now in-bounds final element to the required number of outputs
 	*final = ORGANISM_OUTPUT_NUM;
 
 	return l;
