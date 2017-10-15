@@ -6,11 +6,32 @@
 #include <stdlib.h>
 #include <time.h>
 
+const char* HELP_INFO = "\
+Usage: ev [-<option>[<value>]...]\n\
+	-W<integer>   World width\n\
+	-H<integer>   World height\n\
+	-o<0-255>     Organism initial generation chance\n\
+	-f<0-255>     Food initial generation chance\n\
+	-r<0-255>     Rock initial generation chance\n\
+	-L<integers>  Neural network hidden layers sizes,\n\
+	              separated by single characters\n\
+	-n<integer>   Food nutrition\n\
+	-F<integer>   Organism starting fullness\n\
+	-t<integer>   Start max fullness threshold\n\
+	-m<float>     Mutation of initial creatures\n\
+	-M<float>     Mutation over time\n\
+	-c<integer>   Mutation chance\n\
+	-p<integer>   Minimum population\n\
+	-i<integer>   Number of world cycles between\n\
+	              frames\n\
+	-S<integer>   Seconds per frame\n\
+	-s<integer>   Nanoseconds per frame\n\
+	-h            Display this help information";
+
+
 const int INVALID_ARGUMENT = 1;
 const int SHOWED_HELP = 4319; // This looks vaguely like 'help'
 const int OUT_OF_MEMORY = 14314150; // This looks a bit like 'mem is 0'
-
-const char* HELP_INFO = "This is help information.";
 
 const size_t INITIAL_INT_LIST_SIZE = 1;
 ssize_t parse_integer_list(char* src, size_t* dst, size_t cap) {
