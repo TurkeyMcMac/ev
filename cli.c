@@ -10,25 +10,25 @@ const char* HELP_INFO = "\
 Start the evolution simulator.\n\
 Usage: ev [-<option>[<value>]...]\n\
 Options:\n\
-	-W<integer>   World width\n\
-	-H<integer>   World height\n\
-	-o<0-255>     Organism initial generation chance\n\
-	-f<0-255>     Food initial generation chance\n\
-	-r<0-255>     Rock initial generation chance\n\
-	-L<integers>  Neural network hidden layers sizes,\n\
-	              separated by single characters\n\
-	-n<integer>   Food nutrition\n\
-	-F<integer>   Organism starting fullness\n\
-	-t<integer>   Start max fullness threshold\n\
-	-m<float>     Mutation of initial creatures\n\
-	-M<float>     Mutation over time\n\
-	-c<integer>   Mutation chance\n\
-	-p<integer>   Minimum population\n\
-	-i<integer>   Number of world cycles between\n\
-	              frames\n\
-	-S<integer>   Seconds per frame\n\
-	-s<integer>   Nanoseconds per frame\n\
-	-(h | ?)      Display this help information";
+	-W<integer>	World width\n\
+	-H<integer>	World height\n\
+	-o<0-255>	Organism initial generation chance\n\
+	-f<0-255>	Food initial generation chance\n\
+	-r<0-255>	Rock initial generation chance\n\
+	-L<integers>	Neural network hidden layers sizes,\n\
+			separated by single characters\n\
+	-n<integer>	Food nutrition\n\
+	-F<integer>	Organism starting fullness\n\
+	-t<integer>	Start max fullness threshold\n\
+	-m<float>	Mutation of initial creatures\n\
+	-M<float>	Mutation over time\n\
+	-c<integer>	Mutation chance\n\
+	-p<integer>	Minimum population\n\
+	-i<integer>	Number of world cycles between\n\
+			frames\n\
+	-S<integer>	Seconds per frame\n\
+	-s<integer>	Nanoseconds per frame\n\
+	-(h | ?)	Display this help information";
 
 
 const int INVALID_ARGUMENT = 1;
