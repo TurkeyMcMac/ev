@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-const char* HELP_INFO = "\
-Start the evolution simulator.\n\
+const char* DESCRIPTION = "Start the evolution simulator.";
+const char* HELP_INSTRUCTIONS = "\
 Usage: ev [-<option>[<value>]...]\n\
 Options:\n\
 	-W<integer>	World width\n\
@@ -137,11 +137,11 @@ int parse_arg(struct ProgConfig* conf, char* arg) {
 			break;
 		case 'h': // help
 		case '?':
-			fprintf(stderr, "%s\n", HELP_INFO);
+			fprintf(stderr, "%s\n%s\n", DESCRIPTION, HELP_INSTRUCTIONS);
 
 			return SHOWED_HELP;
 		default:
-			fprintf(stderr, "Invalid argument: '%c'\n%s\n", *arg, HELP_INFO);
+			fprintf(stderr, "Invalid argument: '%c'\n%s\n", *arg, HELP_INSTRUCTIONS);
 
 			return INVALID_ARGUMENT;
 	}
