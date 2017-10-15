@@ -7,7 +7,9 @@
 #include <time.h>
 
 const char* HELP_INFO = "\
+Start the evolution simulator.\n\
 Usage: ev [-<option>[<value>]...]\n\
+Options:\n\
 	-W<integer>   World width\n\
 	-H<integer>   World height\n\
 	-o<0-255>     Organism initial generation chance\n\
@@ -26,7 +28,7 @@ Usage: ev [-<option>[<value>]...]\n\
 	              frames\n\
 	-S<integer>   Seconds per frame\n\
 	-s<integer>   Nanoseconds per frame\n\
-	-h            Display this help information";
+	-(h | ?)      Display this help information";
 
 
 const int INVALID_ARGUMENT = 1;
@@ -137,6 +139,7 @@ int load_config_to(struct ProgConfig* conf, int argc, char** argv) {
 
 				break;
 			case 'h': // help
+			case '?':
 				fprintf(stderr, "%s\n", HELP_INFO);
 
 				return SHOWED_HELP;
