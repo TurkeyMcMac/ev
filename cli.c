@@ -23,6 +23,7 @@ Options:\n\
 	-m<float>	Mutation of initial creatures\n\
 	-M<float>	Mutation over time\n\
 	-c<integer>	Mutation chance\n\
+	-N<integer>	Food added per world cycle\n\
 	-p<integer>	Minimum population\n\
 	-i<integer>	Number of world cycles between\n\
 			frames\n\
@@ -117,6 +118,10 @@ int parse_arg(struct ProgConfig* conf, char* arg) {
 			break;
 		case 'c': // mutation chance
 			conf->world.mutation_chance = (unsigned int)strtol(&arg[1], NULL, 10);
+
+			break;
+		case 'N': // food per tick
+			conf->food_per_tick = (size_t)strtol(&arg[1], NULL, 10);
 
 			break;
 		case 'p': // minimum population

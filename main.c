@@ -29,6 +29,7 @@ struct ProgConfig CONFIG = {
 		.food = 10,
 		.rock = 2
 	},
+	.food_per_tick = 1,
 	.minimum_population = 30,
 	.ticks_per_frame = 100,
 	.frame_delay = (struct timespec) {
@@ -54,7 +55,7 @@ int main(int argc, char** argv) {
 	while (1) {
 		World_update(&w);
 		World_reseed(&w, CONFIG.minimum_population);
-		World_add_food(&w, 1);
+		World_add_food(&w, CONFIG.food_per_tick);
 
 		if (++tick % CONFIG.ticks_per_frame == 0) {
 			World_draw(&w, stdout);
