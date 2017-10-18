@@ -21,4 +21,6 @@ struct ProgConfig {
 
 int load_config_to(struct ProgConfig* conf, int argc, char** argv);
 
+int edit_config(struct ProgConfig* conf, char* cmd);
+
 #endif

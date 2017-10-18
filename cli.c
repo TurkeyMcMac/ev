@@ -165,3 +165,31 @@ int load_config_to(struct ProgConfig* conf, int argc, char** argv) {
 	return 0;
 }
 
+int edit_config(struct ProgConfig* conf, char* cmd) {
+	switch (*cmd) {
+		case 'N': // food per tick
+			conf->food_per_tick = (size_t)strtol(&cmd[1], NULL, 10);
+
+			break;
+		case 'p': // minimum population
+			conf->minimum_population = (size_t)strtol(&cmd[1], NULL, 10);
+
+			break;
+		case 'i': // number of world cycles between frames
+			conf->ticks_per_frame = (unsigned long)strtol(&cmd[1], NULL, 10);
+
+			break;
+		case 'S': // seconds per frame
+			conf->frame_delay.tv_sec = (time_t)strtol(&cmd[1], NULL, 10);
+
+			break;
+		case 's': // nanoseconds per frame
+			conf->frame_delay.tv_nsec = strtol(&cmd[1], NULL, 10);
+
+			break;
+		default:
+			return INVALID_ARGUMENT;
+	}
+
+	return 0;
+}
