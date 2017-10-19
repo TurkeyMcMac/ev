@@ -17,6 +17,7 @@ struct WorldConfig {
 	size_t nn_input_num;
 	size_t* nn_layers;
 	size_t nn_layer_num;
+	unsigned int lifetime;
 };
 
 struct World {

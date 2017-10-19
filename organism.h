@@ -11,10 +11,11 @@
 struct Organism {
 	unsigned int fullness;
 	unsigned int fullness_threshold;
+	unsigned int ticks_left;
 	struct Brain brain;
 };
 
-struct Organism Organism_new(unsigned int fullness, unsigned int fullness_threshold, struct Brain brain);
+struct Organism Organism_new(unsigned int fullness, unsigned int fullness_threshold, unsigned int ticks_left, struct Brain brain);
 
 void Organism_eat(struct Organism* self, unsigned int nutrients);
 
@@ -39,6 +40,6 @@ struct Reaction {
 
 struct Reaction Organism_react(const struct Organism* self, char* tiles);
 
-struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance);
+struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance, unsigned int ticks_left);
 
 #endif

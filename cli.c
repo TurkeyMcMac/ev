@@ -25,6 +25,7 @@ Options:\n\
 	-c<integer>	Mutation chance\n\
 	-N<integer>	Food added per world cycle\n\
 	-p<integer>	Minimum population\n\
+	-l<integer>	Lifetime of creatures\n\
 	-i<integer>	Number of world cycles between\n\
 			frames\n\
 	-S<integer>	Seconds per frame\n\
@@ -126,6 +127,10 @@ int parse_arg(struct ProgConfig* conf, char* arg) {
 			break;
 		case 'p': // minimum population
 			conf->minimum_population = (size_t)strtol(&arg[1], NULL, 10);
+
+			break;
+		case 'l':
+			conf->world.lifetime = (unsigned int)strtol(&arg[1], NULL, 10);
 
 			break;
 		case 'i': // number of world cycles between frames

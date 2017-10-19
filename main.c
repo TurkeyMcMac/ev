@@ -26,7 +26,8 @@ struct ProgConfig CONFIG = {
 		.mutation_chance = 10,
 		.nn_input_num = NN_INPUT_NUM,
 		.nn_layers = (size_t*)&NN_LAYERS,
-		.nn_layer_num = NN_LAYER_NUM
+		.nn_layer_num = NN_LAYER_NUM,
+		.lifetime = 2000
 	},
 	.seed = (TILE_SEED) {
 		.organism = 1,
