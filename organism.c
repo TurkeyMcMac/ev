@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 
-struct Organism Organism_new(unsigned int fullness, unsigned int fullness_threshold, unsigned int ticks_left, struct Brain brain) {
+struct Organism Organism_new(unsigned fullness, unsigned fullness_threshold, unsigned ticks_left, struct Brain brain) {
 	struct Organism o;
 	o.fullness = fullness;
 	o.fullness_threshold = fullness_threshold;
@@ -14,7 +14,7 @@ struct Organism Organism_new(unsigned int fullness, unsigned int fullness_thresh
 	return o;
 }
 
-void Organism_eat(struct Organism* self, unsigned int nutrients) {
+void Organism_eat(struct Organism* self, unsigned nutrients) {
 	self->fullness += nutrients;
 }
 
@@ -58,7 +58,7 @@ struct Reaction Organism_react(const struct Organism* self, char* tiles) {
 	return r;
 }
 
-struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance, unsigned int ticks_left) {
+struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance, unsigned ticks_left) {
 	self->fullness /= 2;
 
 	if ((unsigned char)rand() > mutation_chance) {

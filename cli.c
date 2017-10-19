@@ -98,15 +98,15 @@ int parse_arg(struct ProgConfig* conf, char* arg) {
 
 			break;
 		case 'n': // food nutrition
-			conf->world.nutrition = (unsigned int)strtol(&arg[1], NULL, 10);
+			conf->world.nutrition = (unsigned)strtol(&arg[1], NULL, 10);
 
 			break;
 		case 'F': // start fullness
-			conf->world.fullness = (unsigned int)strtol(&arg[1], NULL, 10);
+			conf->world.fullness = (unsigned)strtol(&arg[1], NULL, 10);
 
 			break;
 		case 't': // max start fullness threshold
-			conf->world.fullness_threshold_max = (unsigned int)strtol(&arg[1], NULL, 10);
+			conf->world.fullness_threshold_max = (unsigned)strtol(&arg[1], NULL, 10);
 
 			break;
 		case 'm': // start mutation
@@ -118,7 +118,7 @@ int parse_arg(struct ProgConfig* conf, char* arg) {
 
 			break;
 		case 'c': // mutation chance
-			conf->world.mutation_chance = (unsigned int)strtol(&arg[1], NULL, 10);
+			conf->world.mutation_chance = (unsigned)strtol(&arg[1], NULL, 10);
 
 			break;
 		case 'N': // food per tick
@@ -130,7 +130,7 @@ int parse_arg(struct ProgConfig* conf, char* arg) {
 
 			break;
 		case 'l':
-			conf->world.lifetime = (unsigned int)strtol(&arg[1], NULL, 10);
+			conf->world.lifetime = (unsigned)strtol(&arg[1], NULL, 10);
 
 			break;
 		case 'i': // number of world cycles between frames

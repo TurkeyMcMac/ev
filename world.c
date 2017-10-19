@@ -26,7 +26,7 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 			case Tile_ORGANISM:
 				w.tiles[i] = Tile_organism(Organism_new(
 					conf.fullness,
-					(unsigned int)rand() % conf.fullness_threshold_max,
+					(unsigned)rand() % conf.fullness_threshold_max,
 					conf.lifetime,
 					Brain_random(
 						conf.start_mutation,
@@ -55,7 +55,7 @@ void World_reseed(struct World* self, size_t target) {
 	while (self->alive_counter < target) {
 		*World_select(self, Tile_EMPTY) = Tile_organism(Organism_new(
 			self->conf.fullness,
-			(unsigned int)rand() % self->conf.fullness_threshold_max,
+			(unsigned)rand() % self->conf.fullness_threshold_max,
 			self->conf.lifetime,
 			Brain_random(
 				self->conf.start_mutation,

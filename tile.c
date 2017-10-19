@@ -19,7 +19,7 @@ struct Tile Tile_rock() {
 	return t;
 }
 
-struct Tile Tile_food(unsigned int nutrients) {
+struct Tile Tile_food(unsigned nutrients) {
 	struct Tile t;
 	t.tag = Tile_FOOD;
 	t.val.nutrients = nutrients;

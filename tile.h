@@ -21,7 +21,7 @@ struct Tile {
 	} tag;
 	union {
 		struct Organism org;
-		unsigned int nutrients;
+		unsigned nutrients;
 	} val;
 };
 
@@ -29,7 +29,7 @@ struct Tile Tile_empty();
 
 struct Tile Tile_rock();
 
-struct Tile Tile_food(unsigned int nutrients);
+struct Tile Tile_food(unsigned nutrients);
 
 struct Tile Tile_organism(struct Organism org);
 

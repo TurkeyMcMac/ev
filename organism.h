@@ -9,15 +9,15 @@
 #include <stddef.h>
 
 struct Organism {
-	unsigned int fullness;
-	unsigned int fullness_threshold;
-	unsigned int ticks_left;
+	unsigned fullness;
+	unsigned fullness_threshold;
+	unsigned ticks_left;
 	struct Brain brain;
 };
 
-struct Organism Organism_new(unsigned int fullness, unsigned int fullness_threshold, unsigned int ticks_left, struct Brain brain);
+struct Organism Organism_new(unsigned fullness, unsigned fullness_threshold, unsigned ticks_left, struct Brain brain);
 
-void Organism_eat(struct Organism* self, unsigned int nutrients);
+void Organism_eat(struct Organism* self, unsigned nutrients);
 
 void Organism_tick(struct Organism* self);
 
@@ -40,6 +40,6 @@ struct Reaction {
 
 struct Reaction Organism_react(const struct Organism* self, char* tiles);
 
-struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance, unsigned int ticks_left);
+struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance, unsigned ticks_left);
 
 #endif
