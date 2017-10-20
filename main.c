@@ -10,7 +10,12 @@
 int main(int argc, char** argv) {
 	struct ProgConfig config = PROG_CONFIG_DEFAULT;
 	pthread_mutex_t config_mutex;
-	pthread_mutex_init(&config_mutex, NULL);
+	int mutex_err = pthread_mutex_init(&config_mutex, NULL);
+	if (mutex_err) {
+		fprintf(stderr, "Could not initialize mutex.\n");
+
+		return mutex_err;
+	}
 
 	int parse_failed = load_config_to(&config, argc, argv);
 	if (parse_failed) return parse_failed;
@@ -21,7 +26,11 @@ int main(int argc, char** argv) {
 	};
 	pthread_t input_monitor_id;
 	int monitor_err = pthread_create(&input_monitor_id, NULL, monitor_input, &monitor_args);
-	if (monitor_err) return monitor_err;
+	if (monitor_err) {
+		fprintf(stderr, "Could not initialize input monitor thread.\n");
+
+		return monitor_err;
+	}
 
 	srand(time(NULL));
 
