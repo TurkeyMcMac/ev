@@ -5,6 +5,7 @@
 #include "organism.h"
 #include "world.h"
 
+#include <pthread.h>
 #include <stddef.h>
 #include <time.h>
 
@@ -52,5 +53,12 @@ struct ProgConfig {
 int load_config_to(struct ProgConfig* conf, int argc, char** argv);
 
 int edit_config(struct ProgConfig* conf, char* cmd);
+
+struct MonitorArgs {
+	struct ProgConfig* config;
+	pthread_mutex_t* monitor_flag;
+};
+
+void* monitor_input(void* args);
 
 #endif

@@ -200,3 +200,30 @@ int edit_config(struct ProgConfig* conf, char* cmd) {
 
 	return 0;
 }
+
+void* monitor_input(void* _args) {
+	struct MonitorArgs* args = _args;
+	
+	int taking_input = 0;
+
+	char* cmd = NULL;
+	size_t cmd_len = 0;
+
+	while (1) {
+		if (getline(&cmd, &cmd_len, stdin) > 1) {
+			if (taking_input) edit_config(args->config, cmd);
+		} else
+			if (taking_input) {
+				taking_input = 0;
+
+				pthread_mutex_unlock(args->monitor_flag);
+			} else {
+				taking_input = 1;
+
+				pthread_mutex_lock(args->monitor_flag);
+			}
+	}
+
+	return NULL;
+
+}
