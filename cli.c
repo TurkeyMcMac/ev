@@ -60,7 +60,7 @@ ssize_t parse_integer_list(char* src, size_t* dst, size_t cap) {
 	if (!(dst = realloc(dst, ++l * sizeof(size_t)))) return -1;
 
 	// Set the now in-bounds final element to the required number of outputs
-	*final = ORGANISM_OUTPUT_NUM;
+	*final = NN_OUTPUT_NUM;
 
 	return l;
 }
@@ -87,16 +87,18 @@ int parse_arg(struct ProgConfig* conf, char* arg) {
 			conf->seed.rock = (unsigned char)strtol(&arg[1], NULL, 10);
 
 			break;
-		case 'L': // nn layers
-			conf->world.nn_layers = malloc(INITIAL_INT_LIST_SIZE * sizeof(size_t));
+		case 'L': /* nn layers */ {
+			size_t* nn_layers = malloc(INITIAL_INT_LIST_SIZE * sizeof(size_t));
 
-			ssize_t layer_num = parse_integer_list(arg, conf->world.nn_layers, INITIAL_INT_LIST_SIZE);
+			ssize_t layer_num = parse_integer_list(arg, nn_layers, INITIAL_INT_LIST_SIZE);
 
-			if (layer_num >= 0)
-				conf->world.nn_layer_num = layer_num;
-			else return OUT_OF_MEMORY;
+			if (layer_num < 0) return OUT_OF_MEMORY;
+
+			conf->world.nn_layers = nn_layers;
+			conf->world.nn_layer_num = layer_num;
 
 			break;
+		}
 		case 'n': // food nutrition
 			conf->world.nutrition = (unsigned)strtol(&arg[1], NULL, 10);
 

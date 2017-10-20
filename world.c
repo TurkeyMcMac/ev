@@ -12,6 +12,7 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 	struct World w;
 	w.width = width;
 	w.height = height;
+
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 
 	w.conf = conf;

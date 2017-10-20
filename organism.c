@@ -4,6 +4,12 @@
 
 #include <stdlib.h>
 
+const size_t NN_INPUT_NUM = 33;
+const size_t NN_OUTPUT_NUM = 5;
+const size_t NN_LAYER_NUM = 3;
+static size_t NN_LAYER_ARR[NN_LAYER_NUM] = {16, 8, NN_OUTPUT_NUM};
+const size_t* NN_LAYERS = (size_t*)&NN_LAYER_ARR;
+
 struct Organism Organism_new(unsigned fullness, unsigned fullness_threshold, unsigned ticks_left, struct Brain brain) {
 	struct Organism o;
 	o.fullness = fullness;

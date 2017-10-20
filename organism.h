@@ -2,11 +2,14 @@
 
 #define _ORGANISM_H
 
-#define ORGANISM_OUTPUT_NUM 5
-
 #include "brain.h"
 
 #include <stddef.h>
+
+extern const size_t NN_INPUT_NUM;
+extern const size_t NN_OUTPUT_NUM;
+extern const size_t NN_LAYER_NUM;
+extern const size_t* NN_LAYERS;
 
 struct Organism {
 	unsigned fullness;

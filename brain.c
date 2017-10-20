@@ -153,6 +153,7 @@ struct Brain Brain_random(float amount, size_t input_num, const size_t* layers, 
 	struct Brain b;
 
 	b.layers = malloc(layer_num * sizeof(struct Layer));
+
 	size_t last_layer_size = input_num;
 	for (size_t i = 0; i < layer_num; ++i) {
 		b.layers[i] = Layer_random(amount, layers[i], last_layer_size);

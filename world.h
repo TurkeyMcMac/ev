@@ -15,7 +15,7 @@ struct WorldConfig {
 	float mutation;
 	unsigned char mutation_chance;
 	size_t nn_input_num;
-	size_t* nn_layers;
+	const size_t* nn_layers;
 	size_t nn_layer_num;
 	unsigned lifetime;
 };
