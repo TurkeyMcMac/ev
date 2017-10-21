@@ -35,10 +35,10 @@ int main(int argc, char** argv) {
 	srand(time(NULL));
 
 	struct World w = World_random(
-		config.world_width,
-		config.world_height,
-		config.seed,
-		config.world
+		config.init.world_width,
+		config.init.world_height,
+		config.init.seed,
+		config.init.world
 	);
 
 	unsigned long tick = 0;
@@ -46,16 +46,16 @@ int main(int argc, char** argv) {
 		pthread_mutex_lock(&config_mutex);
 
 		World_update(&w);
-		World_reseed(&w, config.minimum_population);
-		World_add_food(&w, config.food_per_tick);
+		World_reseed(&w, config.runtime.minimum_population);
+		World_add_food(&w, config.runtime.food_per_tick);
 
-		if (++tick % config.ticks_per_frame == 0) {
+		if (++tick % config.runtime.ticks_per_frame == 0) {
 			World_draw(&w, stdout);
 			printf("\nalive: %ld\n", World_alive_count(&w));
 
 			pthread_mutex_unlock(&config_mutex);
 
-			nanosleep(&config.frame_delay, NULL);
+			nanosleep(&config.runtime.frame_delay, NULL);
 		} else pthread_mutex_unlock(&config_mutex);
 	}
 }
