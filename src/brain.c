@@ -171,22 +171,3 @@ void Brain_drop(struct Brain* self) {
 
 	free(self->layers);
 }
-/*
-#include <stdio.h>
-#include <time.h>
-
-int main() {
-	srand(time(NULL));
-	
-	size_t layers[3] = {5, 6, 5};
-
-	struct Brain b_before = Brain_random(1.0, 5, (size_t*)&layers, 3);	
-	struct Brain b = Brain_mutate(&b_before, 1.0);
-	
-	char input[5] = {'\0', '\1', '\0', '\1', '\0'};
-
-	char* output = Brain_compute(&b, (char*)&input);
-
-	for (size_t i = 0; i < 5; ++i)
-		printf("%d\n", output[i]);
-}*/
