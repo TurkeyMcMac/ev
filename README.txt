@@ -1,6 +1,6 @@
- |--      | Evolution
- |-  |  | |
- |--  \/  | Simulator
-----------/
+  __    ::
+ (_     ::
+ (__ \/ ::
+::::::::::
 
 Ev simulates evolution. I'll add more later.
