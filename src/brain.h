@@ -1,4 +1,4 @@
-#ifndef _BRAIN_H
+#ifndef _BRAIN_H // Whole file
 
 #define _BRAIN_H
 
@@ -6,19 +6,28 @@
 
 #include <stddef.h>
 
+typedef float* BRAIN_WEIGHTS;
+
 struct Brain {
-	struct Layer* layers;
+	BRAIN_WEIGHTS weights;
+	size_t weight_num;
+	size_t input_num;
+	size_t* layers;
 	size_t layer_num;
 };
 
+struct Brain Brain_new(size_t input_num, size_t* layers, size_t layer_num);
+
+void Brain_link(struct Brain* self, BRAIN_WEIGHTS weights);
+
+BRAIN_WEIGHTS Brain_clone(const struct Brain* self);
+
+BRAIN_WEIGHTS Brain_mutate(const struct Brain* self, float amount);
+
 char* Brain_compute(const struct Brain* self, const char* input);
 
-struct Brain Brain_random(float range, size_t input_num, const size_t* layers, size_t layer_num);
+BRAIN_WEIGHTS random_weights(struct Brain* template, float range);
 
-struct Brain Brain_clone(const struct Brain* self);
-
-struct Brain Brain_mutate(const struct Brain* self, float amount);
-
-void Brain_drop(struct Brain* self);
+size_t Brain_input_num(struct Brain* self);
 
 #endif

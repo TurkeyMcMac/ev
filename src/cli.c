@@ -87,14 +87,14 @@ case 'r': /* rock generation chance */							\
 											\
 	break;										\
 case 'L': /* nn layers */ {								\
-	size_t* nn_layers = malloc(INITIAL_INT_LIST_SIZE * sizeof(size_t));		\
+	size_t* layers = malloc(INITIAL_INT_LIST_SIZE * sizeof(size_t));		\
 											\
-	ssize_t layer_num = parse_integer_list(arg, nn_layers, INITIAL_INT_LIST_SIZE);	\
+	ssize_t layer_num = parse_integer_list(arg, layers, INITIAL_INT_LIST_SIZE);	\
 											\
 	if (layer_num < 0) return OUT_OF_MEMORY;					\
 											\
-	init_conf.world.nn_layers = nn_layers;						\
-	init_conf.world.nn_layer_num = layer_num;					\
+	init_conf.world.brain.layers = layers;						\
+	init_conf.world.brain.layer_num = layer_num;					\
 											\
 	break;										\
 }											\

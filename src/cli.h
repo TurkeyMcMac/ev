@@ -21,9 +21,11 @@
 			.start_mutation = 1.0,			\
 			.mutation = 0.01,			\
 			.mutation_chance = 10,			\
-			.nn_input_num = NN_INPUT_NUM,		\
-			.nn_layers = NN_LAYERS,			\
-			.nn_layer_num = NN_LAYER_NUM,		\
+			.brain = (struct Brain) {		\
+				.input_num = NN_INPUT_NUM,	\
+				.layers = NN_LAYERS,		\
+				.layer_num = NN_LAYER_NUM	\
+			},					\
 			.lifetime = 2000			\
 		},						\
 		.seed = (TILE_SEED) {				\

@@ -8,14 +8,14 @@ const size_t NN_INPUT_NUM = 33;
 const size_t NN_OUTPUT_NUM = 5;
 const size_t NN_LAYER_NUM = 3;
 static size_t NN_LAYER_ARR[NN_LAYER_NUM] = {16, 8, NN_OUTPUT_NUM};
-const size_t* NN_LAYERS = (size_t*)&NN_LAYER_ARR;
+size_t* NN_LAYERS = (size_t*)&NN_LAYER_ARR;
 
-struct Organism Organism_new(unsigned fullness, unsigned fullness_threshold, unsigned ticks_left, struct Brain brain) {
+struct Organism Organism_new(unsigned fullness, unsigned fullness_threshold, unsigned ticks_left, BRAIN_WEIGHTS weights) {
 	struct Organism o;
 	o.fullness = fullness;
 	o.fullness_threshold = fullness_threshold;
 	o.ticks_left = ticks_left;
-	o.brain = brain;
+	o.weights = weights;
 
 	return o;
 }
@@ -35,18 +35,18 @@ int Organism_dead(const struct Organism* self) {
 }
 
 void Organism_drop(struct Organism* self) {
-	Brain_drop(&self->brain);
+	free(self->weights);
 }
-
-struct Reaction Organism_react(const struct Organism* self, char* tiles) {
+                                                         // Must be linked
+struct Reaction Organism_react(const struct Organism* self, const struct Brain* brain, char* input) {
 	#define _check_move_output(i, m) \
 		do { if (out[i]) { r.move = m; goto end; } } while (0)
 
 	struct Reaction r;
 
-	tiles[32] = self->fullness > self->fullness_threshold;
+	input[32] = self->fullness > self->fullness_threshold;
 
-	char* out = Brain_compute(&self->brain, tiles);
+	char* out = Brain_compute(brain, input);
 
 	r.baby = out[4];
 
@@ -58,24 +58,28 @@ struct Reaction Organism_react(const struct Organism* self, char* tiles) {
 	r.move = MOVE_NOWHERE;
 
 	end:
-
 	free(out);
 
 	return r;
 }
-
-struct Organism Organism_baby(struct Organism* self, float mutation, unsigned char mutation_chance, unsigned ticks_left) {
+                                                  // Must be linked
+struct Organism Organism_baby(struct Organism* self, struct Brain* brain, float mutation, unsigned char mutation_chance, unsigned ticks_left) {
 	self->fullness /= 2;
 
 	if ((unsigned char)rand() > mutation_chance) {
-		return Organism_new(self->fullness, self->fullness_threshold, ticks_left, Brain_clone(&self->brain));
-	} else
-		return Organism_new(
-			self->fullness,
-			rand() % 2 == 0 ?
-				self->fullness_threshold + 1:
-				self->fullness_threshold - 1,
-			ticks_left,
-			Brain_mutate(&self->brain, mutation)
-		);
+		return Organism_new(self->fullness, self->fullness_threshold, ticks_left, Brain_clone(brain));
+	}
+
+	return Organism_new(
+		self->fullness,
+		rand() % 2 == 0 ?
+			self->fullness_threshold + 1:
+			self->fullness_threshold - 1,
+		ticks_left,
+		Brain_mutate(brain, mutation)
+	);
+}
+
+BRAIN_WEIGHTS Organism_weights(const struct Organism* self) {
+	return self->weights;
 }

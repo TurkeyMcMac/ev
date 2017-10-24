@@ -2,6 +2,7 @@
 
 #define _WORLD_H
 
+#include "brain.h"
 #include "tile.h"
 
 #include <stddef.h>
@@ -14,9 +15,7 @@ struct WorldConfig {
 	float start_mutation;
 	float mutation;
 	unsigned char mutation_chance;
-	size_t nn_input_num;
-	const size_t* nn_layers;
-	size_t nn_layer_num;
+	struct Brain brain;
 	unsigned lifetime;
 };
 

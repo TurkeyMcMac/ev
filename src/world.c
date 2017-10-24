@@ -15,6 +15,8 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 
+	conf.brain = Brain_new(conf.brain.input_num, conf.brain.layers, conf.brain.layer_num); // TODO: Find a better way to calculate the length maybe
+
 	w.conf = conf;
 
 	w.alive_counter = 0;
@@ -29,12 +31,7 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 					conf.fullness,
 					(unsigned)rand() % conf.fullness_threshold_max,
 					conf.lifetime,
-					Brain_random(
-						conf.start_mutation,
-						conf.nn_input_num,
-						conf.nn_layers,
-						conf.nn_layer_num
-					)
+					random_weights(&conf.brain, conf.start_mutation)
 				));
 
 				++w.alive_counter;
@@ -58,12 +55,7 @@ void World_reseed(struct World* self, size_t target) {
 			self->conf.fullness,
 			(unsigned)rand() % self->conf.fullness_threshold_max,
 			self->conf.lifetime,
-			Brain_random(
-				self->conf.start_mutation,
-				self->conf.nn_input_num,
-				self->conf.nn_layers,
-				self->conf.nn_layer_num
-			)
+			random_weights(&self->conf.brain, self->conf.start_mutation)
 		));
 
 		++self->alive_counter;
@@ -97,10 +89,12 @@ void World_update(struct World* self) {
 					continue;
 				}
 
-				char* input = calloc(self->conf.nn_input_num, sizeof(char));
+				Brain_link(&self->conf.brain, Organism_weights(&tile->val.org));
+
+				char* input = calloc(Brain_input_num(&self->conf.brain), sizeof(char));
 				World_vicinity(self, x, y, input);
 
-				struct Reaction reaction = Organism_react(&tile->val.org, input);
+				struct Reaction reaction = Organism_react(&tile->val.org, &self->conf.brain, input);
 
 				struct Tile* dest;
 				switch (reaction.move) {
@@ -145,7 +139,16 @@ void World_update(struct World* self) {
 				}
 
 				if (reaction.baby) {
-					Tile_org_set(dest, Organism_baby(&tile->val.org, self->conf.mutation, self->conf.mutation_chance, 2000));
+					Tile_org_set(
+						dest,
+						Organism_baby(
+							&tile->val.org,
+							&self->conf.brain,
+							self->conf.mutation,
+							self->conf.mutation_chance,
+							2000
+						)
+					);
 
 					++self->alive_counter;
 				} else {
