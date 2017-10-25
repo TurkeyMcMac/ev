@@ -15,7 +15,8 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 
-	conf.brain = Brain_new(conf.brain.input_num, conf.brain.layers, conf.brain.layer_num); // TODO: Find a better way to calculate the length maybe
+	Brain_calc_weight_num(&conf.brain);
+	Brain_calc_max_layer_size(&conf.brain);
 
 	w.conf = conf;
 

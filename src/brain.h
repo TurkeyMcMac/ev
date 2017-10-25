@@ -17,7 +17,9 @@ struct Brain {
 	size_t max_layer_size;
 };
 
-struct Brain Brain_new(size_t input_num, size_t* layers, size_t layer_num);
+void Brain_calc_weight_num(struct Brain* self);
+
+void Brain_calc_max_layer_size(struct Brain* self);
 
 void Brain_link(struct Brain* self, BRAIN_WEIGHTS weights);
 
