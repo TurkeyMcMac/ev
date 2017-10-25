@@ -14,6 +14,7 @@ struct Brain {
 	size_t input_num;
 	size_t* layers;
 	size_t layer_num;
+	size_t max_layer_size;
 };
 
 struct Brain Brain_new(size_t input_num, size_t* layers, size_t layer_num);

@@ -5,6 +5,14 @@
 
 const float NEURON_THRESHOLD = 0.0;
 
+size_t max_size_t(const size_t* list, size_t len) {
+	size_t max = *list;
+	for (size_t i = 1; i < len; ++i)
+		if (list[i] > max) max = list[i];
+
+	return max;
+}
+
 struct Brain Brain_new(size_t input_num, size_t* layers, size_t layer_num) {
 	struct Brain b;
 	b.input_num = input_num;
@@ -18,6 +26,8 @@ struct Brain Brain_new(size_t input_num, size_t* layers, size_t layer_num) {
 
 		last_layer_size = layers[i];
 	}
+
+	b.max_layer_size = max_size_t(b.layers, b.layer_num);
 
 	return b;
 }
@@ -41,25 +51,15 @@ BRAIN_WEIGHTS Brain_mutate(const struct Brain* self, float amount) {
 
 void layer_compute(float* weights, size_t neuron_num, size_t weights_per_neuron, const char* input, char* output);
 
-size_t max_size_t(const size_t* list, size_t len) {
-	size_t max = *list;
-	for (size_t i = 1; i < len; ++i)
-		if (list[i] > max) max = list[i];
-
-	return max;
-}
-
 char* Brain_compute(const struct Brain* self, const char* input) {
-	size_t max_layer_size = max_size_t(self->layers, self->layer_num);
-
-	char* last_layer_out = malloc(self->input_num > max_layer_size ?
+	char* last_layer_out = malloc(self->input_num > self->max_layer_size ?
 		self->input_num :
-		max_layer_size
+		self->max_layer_size
 	);
 	memcpy(last_layer_out, input, self->input_num);
 	size_t last_layer_size = self->input_num;
 
-	char* layer_out = malloc(max_layer_size);
+	char* layer_out = malloc(self->max_layer_size);
 
 	size_t layer_index = 0;
 	for (size_t i = 0; i < self->layer_num; ++i) {
