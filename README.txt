@@ -7,4 +7,3 @@ Ev simulates evolution.
 
 TODO:
  * Add a better description
- * Remove some allocations by allocating large blocks of memory
