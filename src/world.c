@@ -8,6 +8,10 @@
 #include <string.h>
 #include <stdio.h>
 
+const unsigned ORGANISM_SPAWN_TRIES = 5;
+const unsigned RESEED_TRIES = 10;
+const unsigned FOOD_SPAWN_TRIES = 5;
+
 struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, struct WorldConfig conf) {
 	struct World w;
 	w.width = width;
@@ -51,21 +55,28 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 }
 
 void World_reseed(struct World* self, size_t target) {
-	while (self->alive_counter < target) {
-		*World_select(self, Tile_EMPTY) = Tile_organism(Organism_new(
-			self->conf.fullness,
-			(unsigned)rand() % self->conf.fullness_threshold_max,
-			self->conf.lifetime,
-			random_weights(&self->conf.brain, self->conf.start_mutation)
-		));
+	unsigned tries = RESEED_TRIES;
 
-		++self->alive_counter;
+	while (self->alive_counter < target && tries > 0) {
+		struct Tile* tile = World_select(self, Tile_EMPTY, ORGANISM_SPAWN_TRIES);
+		if (tile) {
+			*tile = Tile_organism(Organism_new(
+				self->conf.fullness,
+				(unsigned)rand() % self->conf.fullness_threshold_max,
+				self->conf.lifetime,
+				random_weights(&self->conf.brain, self->conf.start_mutation)
+			));
+
+			++self->alive_counter;
+		} else --tries;
 	}
 }
 
 void World_add_food(struct World* self, size_t amount) {
-	for (size_t i = 0; i < amount; ++i)
-		*World_select(self, Tile_EMPTY) = Tile_food(self->conf.nutrition);
+	for (size_t i = 0; i < amount; ++i) {
+		struct Tile* tile = World_select(self, Tile_EMPTY, FOOD_SPAWN_TRIES);
+		if (tile) *tile = Tile_food(self->conf.nutrition);
+	}
 }
 
 void World_update(struct World* self) {
@@ -180,12 +191,15 @@ struct Tile* World_get(struct World* self, size_t x, size_t y) {
 	else return NULL;
 }
 
-struct Tile* World_select(struct World* self, enum TileTag kind) {
+struct Tile* World_select(struct World* self, enum TileTag kind, unsigned tries) {
 	struct Tile* tile;
 
-	do {
+	while (1) {
 		tile = &self->tiles[(size_t)rand() % (self->width * self->height)];
-	} while (tile->tag != kind);
+
+		if (tile->tag == kind) break;
+		else if (!--tries) return NULL;
+	}
 
 	return tile;
 }

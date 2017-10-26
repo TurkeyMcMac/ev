@@ -92,5 +92,4 @@ entering some commands, press ENTER again to start the simulation going.
 TODO:
  * Add a saving and loading system for creatures and maybe worlds
  * Make it possible to show only a section of a larger world at a time
- * Keep the world from freezing when there is too much food
  * Reorganize the ProgConfig struct
