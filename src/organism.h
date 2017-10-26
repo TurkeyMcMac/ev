@@ -6,9 +6,9 @@
 
 #include <stddef.h>
 
-extern const size_t NN_INPUT_NUM;
-extern const size_t NN_OUTPUT_NUM;
-extern const size_t NN_LAYER_NUM;
+#define NN_INPUT_NUM 33
+#define NN_OUTPUT_NUM 5
+#define NN_LAYER_NUM 3
 extern size_t* NN_LAYERS;
 
 struct Organism {
