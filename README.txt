@@ -59,7 +59,7 @@ Initial mutation       m          float       1.0        No          The amount 
 Incremental mutation   M          float       0.01       No          The amount of mutation between
                                                                      generations.
 
-Mutation chance        c          uint 0-255  10         No          The chance of mutation babies.
+Mutation chance        c          uint 0-255  10         No          The chance of mutating babies.
 
 Food per cycle         N          uint        1          Yes         Food tiles added to the world
                                                                      per cycle.
@@ -72,7 +72,7 @@ Organism lifetime      l          uint        2000       No          The number 
                                                                      which organisms always die.
 
 Cycles per frame       i          uint        100        Yes         The number of cycles per drawn
-                                                                     frame
+                                                                     frame.
 
 Seconds per frame      S          uint        0          Yes         The number of seconds per
                                                                      frame.
