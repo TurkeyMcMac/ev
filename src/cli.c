@@ -65,25 +65,25 @@ ssize_t parse_integer_list(char* src, size_t* dst, size_t cap) {
 	return l;
 }
 
-#define _INIT_OPTS(init_conf, arg) 							\
+#define SWITCH_INIT_OPTS(conf, arg)	 						\
 case 'W': /* width */									\
-	init_conf.world_width = (size_t)strtol(&arg[1], NULL, 10);			\
+	conf->world_width = (size_t)strtol(&arg[1], NULL, 10);				\
 											\
 	break;										\
 case 'H': /* height */									\
-	init_conf.world_height = (size_t)strtol(&arg[1], NULL, 10);			\
+	conf->world_height = (size_t)strtol(&arg[1], NULL, 10);				\
 											\
 	break;										\
 case 'o': /* organism generation chance */						\
-	init_conf.seed.organism = (unsigned char)strtol(&arg[1], NULL, 10);		\
+	conf->seed.organism = (unsigned char)strtol(&arg[1], NULL, 10);			\
 											\
 	break;										\
 case 'f': /* food generation chance */							\
-	init_conf.seed.food = (unsigned char)strtol(&arg[1], NULL, 10);			\
+	conf->seed.food = (unsigned char)strtol(&arg[1], NULL, 10);			\
 											\
 	break;										\
 case 'r': /* rock generation chance */							\
-	init_conf.seed.rock = (unsigned char)strtol(&arg[1], NULL, 10);			\
+	conf->seed.rock = (unsigned char)strtol(&arg[1], NULL, 10);			\
 											\
 	break;										\
 case 'L': /* nn layers */ {								\
@@ -93,67 +93,67 @@ case 'L': /* nn layers */ {								\
 											\
 	if (layer_num < 0) return OUT_OF_MEMORY;					\
 											\
-	init_conf.world.brain.layers = layers;						\
-	init_conf.world.brain.layer_num = layer_num;					\
+	conf->world.brain.layers = layers;						\
+	conf->world.brain.layer_num = layer_num;					\
 											\
 	break;										\
-}											\
-case 'n': /* food nutrition */								\
-	init_conf.world.nutrition = (unsigned)strtol(&arg[1], NULL, 10);		\
-											\
-	break;										\
-case 'F': /* start fullness */								\
-	init_conf.world.fullness = (unsigned)strtol(&arg[1], NULL, 10);			\
-											\
-	break;										\
-case 't': /* max start fullness threshold */						\
-	init_conf.world.fullness_threshold_max = (unsigned)strtol(&arg[1], NULL, 10);	\
-											\
-	break;										\
-case 'm': /* start mutation */								\
-	init_conf.world.start_mutation = strtof(&arg[1], NULL);				\
-											\
-	break;										\
-case 'M': /* mutation */								\
-	init_conf.world.mutation = strtof(&arg[1], NULL);				\
-											\
-	break;										\
-case 'c': /* mutation chance */								\
-	init_conf.world.mutation_chance = (unsigned)strtol(&arg[1], NULL, 10);		\
-											\
-	break;										\
-case 'l': /* organism lifetime */							\
-	init_conf.world.lifetime = (unsigned)strtol(&arg[1], NULL, 10);			\
-											\
-	break;
+}
 
-#define _RUNTIME_OPTS(runtime_conf, arg)						\
+#define SWITCH_RUNTIME_OPTS(conf, arg)							\
 case 'N': /* food per tick */								\
 											\
-	runtime_conf.food_per_tick = (size_t)strtol(&arg[1], NULL, 10);			\
+	conf->food_per_tick = (size_t)strtol(&arg[1], NULL, 10);			\
 											\
 	break;										\
 case 'p': /* minimum population */							\
-	runtime_conf.minimum_population = (size_t)strtol(&arg[1], NULL, 10);		\
+	conf->minimum_population = (size_t)strtol(&arg[1], NULL, 10);			\
 											\
 	break;										\
 case 'i': /* number of world cycles between frames */					\
-	runtime_conf.ticks_per_frame = (unsigned long)strtol(&arg[1], NULL, 10);	\
+	conf->ticks_per_frame = (unsigned long)strtol(&arg[1], NULL, 10);		\
 											\
 	break;										\
 case 'S': /* seconds per frame */							\
-	runtime_conf.frame_delay.tv_sec = (time_t)strtol(&arg[1], NULL, 10);		\
+	conf->frame_delay.tv_sec = (time_t)strtol(&arg[1], NULL, 10);			\
 											\
 	break;										\
 case 's': /* nanoseconds per frame */							\
-	runtime_conf.frame_delay.tv_nsec = strtol(&arg[1], NULL, 10);			\
+	conf->frame_delay.tv_nsec = strtol(&arg[1], NULL, 10);				\
+											\
+	break;										\
+case 'n': /* food nutrition */								\
+	conf->world.nutrition = (unsigned)strtol(&arg[1], NULL, 10);			\
+											\
+	break;										\
+case 'F': /* start fullness */								\
+	conf->world.fullness = (unsigned)strtol(&arg[1], NULL, 10);			\
+											\
+	break;										\
+case 't': /* max start fullness threshold */						\
+	conf->world.fullness_threshold_max = (unsigned)strtol(&arg[1], NULL, 10);	\
+											\
+	break;										\
+case 'm': /* start mutation */								\
+	conf->world.start_mutation = strtof(&arg[1], NULL);				\
+											\
+	break;										\
+case 'M': /* mutation */								\
+	conf->world.mutation = strtof(&arg[1], NULL);					\
+											\
+	break;										\
+case 'c': /* mutation chance */								\
+	conf->world.mutation_chance = (unsigned)strtol(&arg[1], NULL, 10);		\
+											\
+	break;										\
+case 'l': /* organism lifetime */							\
+	conf->world.lifetime = (unsigned)strtol(&arg[1], NULL, 10);			\
 											\
 	break;
 
 int parse_arg(struct ProgConfig* conf, char* arg) {
-	switch (*arg) {
-		_INIT_OPTS(conf->init, arg)
-		_RUNTIME_OPTS(conf->runtime, arg)
+	switch (arg[0]) {
+		SWITCH_INIT_OPTS(conf, arg)
+		SWITCH_RUNTIME_OPTS(conf, arg)
 		case 'h': // help
 		case '?':
 			fprintf(stderr, "%s\n%s\n", DESCRIPTION, HELP_INSTRUCTIONS);
@@ -181,7 +181,7 @@ int load_config_to(struct ProgConfig* conf, int argc, char** argv) {
 
 int edit_config(struct ProgConfig* conf, char* cmd) {
 	switch (*cmd) {
-		_RUNTIME_OPTS(conf->runtime, cmd)
+		SWITCH_RUNTIME_OPTS(conf, cmd)
 		default:
 			return INVALID_ARGUMENT;
 	}

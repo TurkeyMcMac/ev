@@ -12,15 +12,15 @@ const unsigned ORGANISM_SPAWN_TRIES = 5;
 const unsigned RESEED_TRIES = 10;
 const unsigned FOOD_SPAWN_TRIES = 5;
 
-struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, struct WorldConfig conf) {
+struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, struct WorldConfig* conf) {
 	struct World w;
 	w.width = width;
 	w.height = height;
 
 	w.tiles = malloc(width * height * sizeof(struct Tile));
 
-	Brain_calc_weight_num(&conf.brain);
-	Brain_calc_max_layer_size(&conf.brain);
+	Brain_calc_weight_num(&conf->brain);
+	Brain_calc_max_layer_size(&conf->brain);
 
 	w.conf = conf;
 
@@ -33,17 +33,17 @@ struct World World_random(size_t width, size_t height, TILE_SEED tile_seed, stru
 				break;
 			case Tile_ORGANISM:
 				w.tiles[i] = Tile_organism(Organism_new(
-					conf.fullness,
-					(unsigned)rand() % conf.fullness_threshold_max,
-					conf.lifetime,
-					random_weights(&conf.brain, conf.start_mutation)
+					conf->fullness,
+					(unsigned)rand() % conf->fullness_threshold_max,
+					conf->lifetime,
+					random_weights(&conf->brain, conf->start_mutation)
 				));
 
 				++w.alive_counter;
 
 				break;
 			case Tile_FOOD:
-				w.tiles[i] = Tile_food(conf.nutrition);
+				w.tiles[i] = Tile_food(conf->nutrition);
 				break;
 			case Tile_ROCK:
 				w.tiles[i] = Tile_rock();
@@ -61,10 +61,10 @@ void World_reseed(struct World* self, size_t target) {
 		struct Tile* tile = World_select(self, Tile_EMPTY, ORGANISM_SPAWN_TRIES);
 		if (tile) {
 			*tile = Tile_organism(Organism_new(
-				self->conf.fullness,
-				(unsigned)rand() % self->conf.fullness_threshold_max,
-				self->conf.lifetime,
-				random_weights(&self->conf.brain, self->conf.start_mutation)
+				self->conf->fullness,
+				(unsigned)rand() % self->conf->fullness_threshold_max,
+				self->conf->lifetime,
+				random_weights(&self->conf->brain, self->conf->start_mutation)
 			));
 
 			++self->alive_counter;
@@ -75,7 +75,7 @@ void World_reseed(struct World* self, size_t target) {
 void World_add_food(struct World* self, size_t amount) {
 	for (size_t i = 0; i < amount; ++i) {
 		struct Tile* tile = World_select(self, Tile_EMPTY, FOOD_SPAWN_TRIES);
-		if (tile) *tile = Tile_food(self->conf.nutrition);
+		if (tile) *tile = Tile_food(self->conf->nutrition);
 	}
 }
 
@@ -101,12 +101,12 @@ void World_update(struct World* self) {
 					continue;
 				}
 
-				Brain_link(&self->conf.brain, Organism_weights(&tile->val.org));
+				Brain_link(&self->conf->brain, Organism_weights(&tile->val.org));
 
-				char* input = calloc(Brain_input_num(&self->conf.brain), sizeof(char));
+				char* input = calloc(Brain_input_num(&self->conf->brain), sizeof(char));
 				World_vicinity(self, x, y, input);
 
-				struct Reaction reaction = Organism_react(&tile->val.org, &self->conf.brain, input);
+				struct Reaction reaction = Organism_react(&tile->val.org, &self->conf->brain, input);
 
 				struct Tile* dest;
 				switch (reaction.move) {
@@ -155,10 +155,10 @@ void World_update(struct World* self) {
 						dest,
 						Organism_baby(
 							&tile->val.org,
-							&self->conf.brain,
-							self->conf.mutation,
-							self->conf.mutation_chance,
-							2000
+							&self->conf->brain,
+							self->conf->mutation,
+							self->conf->mutation_chance,
+							self->conf->lifetime
 						)
 					);
 

@@ -43,23 +43,23 @@ Rock spawn chance      r          uint 0-255  2          No          The chance 
 
 Brain layers           L          uint,...    16,8       No          The layers of neural networks.
 
-Food nutrition         n          uint        90         No          The points given by food tiles.
+Food nutrition         n          uint        90         Yes         The points given by food tiles.
 
-Organism fullness      F          uint        1000       No          The food points of new animals. 
+Organism fullness      F          uint        1000       Yes         The food points of new animals. 
 
-Max fullness threshold t          uint        500        No          The maximum of the random
+Max fullness threshold t          uint        500        Yes         The maximum of the random
                                                                      fullness threshold generated
                                                                      for new creatures which will
                                                                      alert them if their food points
                                                                      rise above a set point.
 
-Initial mutation       m          float       1.0        No          The amount of variation in new
+Initial mutation       m          float       1.0        Yes         The amount of variation in new
                                                                      organisms.
 
-Incremental mutation   M          float       0.01       No          The amount of mutation between
+Incremental mutation   M          float       0.01       Yes         The amount of mutation between
                                                                      generations.
 
-Mutation chance        c          uint 0-255  10         No          The chance of mutating babies.
+Mutation chance        c          uint 0-255  10         Yes         The chance of mutating babies.
 
 Food per cycle         N          uint        1          Yes         Food tiles added to the world
                                                                      per cycle.
@@ -68,7 +68,7 @@ Minimum population     p          uint        30         Yes         The minimum
                                                                      which new creatures will appear
                                                                      to compensate.
 
-Organism lifetime      l          uint        2000       No          The number of cycles after
+Organism lifetime      l          uint        2000       Yes         The number of cycles after
                                                                      which organisms always die.
 
 Cycles per frame       i          uint        100        Yes         The number of cycles per drawn
@@ -92,4 +92,3 @@ entering some commands, press ENTER again to start the simulation going.
 TODO:
  * Add a saving and loading system for creatures and maybe worlds
  * Make it possible to show only a section of a larger world at a time
- * Reorganize the ProgConfig struct
