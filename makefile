@@ -22,7 +22,7 @@ $(object-dir):
 $(object-dir)/%.o: src/%.c src/%.h
 	$(CC) $(opt-level) -c $< -o $@
 
-$(main-object):
+$(main-object): src/main.c
 	$(CC) $(opt-level) -c src/main.c -o $(main-object)
 
 clean:
