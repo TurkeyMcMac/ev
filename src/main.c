@@ -41,6 +41,10 @@ int main(int argc, char** argv) {
 		&config.world
 	);
 
+	// This speeds up printing the screen to stderr
+	char screen_buf[BUFSIZ];
+	setbuf(stderr, screen_buf);
+
 	unsigned long tick = 0;
 	while (1) {
 		pthread_mutex_lock(&config_mutex);
@@ -50,8 +54,9 @@ int main(int argc, char** argv) {
 		World_add_food(&w, config.food_per_tick);
 
 		if (++tick % config.ticks_per_frame == 0) {
-			World_draw(&w, stdout);
-			printf("\nalive: %ld\n", World_alive_count(&w));
+			World_draw(&w, stderr);
+			fprintf(stderr, "\nalive: %ld\n", World_alive_count(&w));
+			fflush(stderr);
 
 			pthread_mutex_unlock(&config_mutex);
 

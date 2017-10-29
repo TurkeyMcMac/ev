@@ -276,7 +276,5 @@ void World_draw(const struct World* self, FILE* dest) {
 	}
 
 	fprintf(dest, "\x1B[0m");
-
-	fflush(dest);
 }
 
