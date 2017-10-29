@@ -29,6 +29,6 @@ COLOR color(COLOR_CODE fore, COLOR_CODE back);
 
 PIXEL pixel(char symbol, COLOR color);
 
-void PIXEL_draw(PIXEL self, FILE* dest);
+int PIXEL_draw(PIXEL self, FILE* dest);
 
 #endif

@@ -45,6 +45,6 @@ typedef struct {
 
 enum TileTag TILE_SEED_pick(TILE_SEED self);
 
-void Tile_draw(const struct Tile* self, FILE* dest);
+int Tile_draw(const struct Tile* self, FILE* dest);
 
 #endif

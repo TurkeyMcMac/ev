@@ -54,8 +54,10 @@ int main(int argc, char** argv) {
 		World_add_food(&w, config.food_per_tick);
 
 		if (++tick % config.ticks_per_frame == 0) {
-			World_draw(&w, stderr);
-			fprintf(stderr, "\nalive: %ld\n", World_alive_count(&w));
+			if (World_draw(&w, stderr) < 0)
+				fprintf(stderr, "Error drawing world.\n");
+			if (fprintf(stderr, "\nalive: %ld\n", World_alive_count(&w)) < 0)
+				fprintf(stderr, "Error displaying population.\n");
 			fflush(stderr);
 
 			pthread_mutex_unlock(&config_mutex);

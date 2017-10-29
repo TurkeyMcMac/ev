@@ -265,16 +265,19 @@ size_t World_alive_count(const struct World* self) {
 	return self->alive_counter;
 }
 
-void World_draw(const struct World* self, FILE* dest) {
-	Tile_draw(self->tiles, dest);
+int World_draw(const struct World* self, FILE* dest) {
+	#define TRY(fallible) do { int errno = fallible; if (errno < 0) return errno; } while (0)
+
+	TRY(Tile_draw(&self->tiles[0], dest));
 
 	for (size_t i = 1; i < self->width * self->height; ++i) {
 		if (i % self->width == 0)
-			fprintf(dest, "\x1B[0m\n");
+			TRY(fprintf(dest, "\x1B[0m\n"));
 
-		Tile_draw(&self->tiles[i], dest);
+		TRY(Tile_draw(&self->tiles[i], dest));
 	}
 
-	fprintf(dest, "\x1B[0m");
-}
+	TRY(fprintf(dest, "\x1B[0m"));
 
+	return 0;
+}

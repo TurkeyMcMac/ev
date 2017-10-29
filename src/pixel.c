@@ -18,8 +18,8 @@ PIXEL pixel(char symbol, COLOR color) {
 	return p;
 }
 
-void PIXEL_draw(PIXEL self, FILE* dest) {
-	fprintf(dest, "\x1B[3%c;4%cm%c",
+int PIXEL_draw(PIXEL self, FILE* dest) {
+	return fprintf(dest, "\x1B[3%c;4%cm%c",
 		self.color.foreground,
 		self.color.background,
 		self.symbol
