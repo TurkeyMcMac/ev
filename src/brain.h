@@ -5,6 +5,7 @@
 #define float_vary(amount) ((float)rand() / RAND_MAX * amount * 2.0 - amount)
 
 #include <stddef.h>
+#include <stdio.h>
 
 typedef float* BRAIN_WEIGHTS;
 
@@ -32,5 +33,7 @@ char* Brain_compute(const struct Brain* self, const char* input);
 BRAIN_WEIGHTS random_weights(struct Brain* template, float range);
 
 size_t Brain_input_num(struct Brain* self);
+
+int Brain_write(const struct Brain* self, FILE* dst);
 
 #endif

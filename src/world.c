@@ -265,6 +265,10 @@ size_t World_alive_count(const struct World* self) {
 	return self->alive_counter;
 }
 
+struct Brain* World_brain_template(struct World* self) {
+	return &self->conf->brain;
+}
+
 int World_draw(const struct World* self, FILE* dest) {
 	#define TRY(fallible) do { int errno = fallible; if (errno < 0) return errno; } while (0)
 

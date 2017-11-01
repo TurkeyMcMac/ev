@@ -58,6 +58,7 @@ int edit_config(struct ProgConfig* conf, char* cmd);
 
 struct MonitorArgs {
 	struct ProgConfig* config;
+	struct World* world;
 	pthread_mutex_t* monitor_flag;
 };
 

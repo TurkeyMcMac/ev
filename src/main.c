@@ -20,18 +20,6 @@ int main(int argc, char** argv) {
 	int parse_failed = load_config_to(&config, argc, argv);
 	if (parse_failed) return parse_failed;
 
-	struct MonitorArgs monitor_args = {
-		.config = &config,
-		.monitor_flag = &config_mutex
-	};
-	pthread_t input_monitor_id;
-	int monitor_err = pthread_create(&input_monitor_id, NULL, monitor_input, &monitor_args);
-	if (monitor_err) {
-		fprintf(stderr, "Could not initialize input monitor thread.\n");
-
-		return monitor_err;
-	}
-
 	srand(time(NULL));
 
 	struct World w = World_random(
@@ -44,6 +32,19 @@ int main(int argc, char** argv) {
 	// This speeds up printing the screen to stderr
 	char screen_buf[BUFSIZ];
 	setbuf(stderr, screen_buf);
+
+	struct MonitorArgs monitor_args = {
+		.config = &config,
+		.world = &w,
+		.monitor_flag = &config_mutex
+	};
+	pthread_t input_monitor_id;
+	int monitor_err = pthread_create(&input_monitor_id, NULL, monitor_input, &monitor_args);
+	if (monitor_err) {
+		fprintf(stderr, "Could not initialize input monitor thread.\n");
+
+		return monitor_err;
+	}
 
 	unsigned long tick = 0;
 	while (1) {

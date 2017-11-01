@@ -53,6 +53,8 @@ void World_vicinity(struct World* self, size_t x, size_t y, char* dest);
 
 size_t World_alive_count(const struct World* self);
 
+struct Brain* World_brain_template(struct World* self);
+
 int World_draw(const struct World* self, FILE* dest);
 
 #endif

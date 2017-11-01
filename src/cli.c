@@ -189,6 +189,8 @@ int edit_config(struct ProgConfig* conf, char* cmd) {
 	return 0;
 }
 
+const char SAVE_ORGANISM_CHAR = 'O';
+
 void* monitor_input(void* _args) {
 	struct MonitorArgs* args = _args;
 	
@@ -197,10 +199,28 @@ void* monitor_input(void* _args) {
 	char* cmd = NULL;
 	size_t cmd_len = 0;
 
-	while (1) {
+	while (1)
 		if (getline(&cmd, &cmd_len, stdin) > 1) {
-			if (taking_input) edit_config(args->config, cmd);
-		} else
+			if (taking_input) {
+				if (cmd[0] == SAVE_ORGANISM_CHAR) {
+					struct Tile* to_save = World_select(args->world, Tile_ORGANISM, 2000);
+					if (!to_save) {
+						fprintf(stderr, "Couldn't find an organism fast enough.\n");
+						fflush(stderr);
+
+						continue;
+					}
+
+					Brain_link(World_brain_template(args->world), Organism_weights(&to_save->val.org));
+					int errno = Brain_write(World_brain_template(args->world), stdout);
+					if (errno >= 0) errno = fflush(stdout);
+					if (errno < 0) fprintf(stderr, "Organism saving failed.\n"), fflush(stderr);
+				} else {
+					int errno = edit_config(args->config, cmd);
+					if (errno) fprintf(stderr, "Unrecognized format.\n"), fflush(stderr);
+				}
+			}
+		} else {
 			if (taking_input) {
 				taking_input = 0;
 
@@ -210,7 +230,7 @@ void* monitor_input(void* _args) {
 
 				pthread_mutex_lock(args->monitor_flag);
 			}
-	}
+		}
 
 	return NULL;
 

@@ -1,5 +1,6 @@
 #include "brain.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -97,4 +98,9 @@ void layer_compute(float* weights, size_t neuron_num, size_t weights_per_neuron,
 
 size_t Brain_input_num(struct Brain* self) {
 	return self->input_num;
+}
+
+                // Must be linked
+int Brain_write(const struct Brain* self, FILE* dst) {
+	return fwrite(self->weights, sizeof(float), self->weight_num, dst);
 }
