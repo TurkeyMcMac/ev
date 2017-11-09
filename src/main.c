@@ -58,12 +58,14 @@ int main(int argc, char** argv) {
 			if (World_draw(&w, stderr) < 0)
 				fprintf(stderr, "Error drawing world.\n");
 			if (fprintf(stderr, "\nalive: %ld\n", World_alive_count(&w)) < 0)
-				fprintf(stderr, "Error displaying population.\n");
+				fprintf(stderr, "Error displaying population.");
 			fflush(stderr);
 
 			pthread_mutex_unlock(&config_mutex);
 
 			nanosleep(&config.frame_delay, NULL);
+
+			fprintf(stderr, "\x1B[%lluA", (unsigned long long)w.height + 1);
 		} else pthread_mutex_unlock(&config_mutex);
 	}
 }
